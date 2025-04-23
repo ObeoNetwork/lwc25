@@ -1,6 +1,7 @@
 package org.eclipse.sirius.lwc25.questionnaire.starter.services;
 
 import com.google.common.collect.Streams;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.answer.Answer;
@@ -8,8 +9,8 @@ import org.eclipse.sirius.answer.AnswerPackage;
 import org.eclipse.sirius.answer.UserAnswers;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.lwc25.questionnaire.starter.helper.Utils;
 import org.eclipse.sirius.questionnaire.*;
-import org.springframework.util.StreamUtils;
 
 import java.sql.Date;
 import java.util.List;
@@ -17,57 +18,42 @@ import java.util.Optional;
 
 public class UserAnswersService {
 
+    private final ValidationService validator;
+
+    public UserAnswersService(ValidationService validator) {
+        this.validator = validator;
+    }
+
     public boolean isUndefined(Object obj) {
         return obj == null;
     }
 
     public boolean isValid(ConditionalGroup eObject, UserAnswers answers) {
-//        var manager = new VariableManager();
-//        manager.put(VariableManager.SELF, eObject);
-//        eObject.eContainer();
-//        var elements = (List<QuestionnaireElement>) eObject.eContainer().eGet(eObject.eContainingFeature());
-//
-//        QuestionnaireElement element = null;
-//        for(var elem: elements) {
-//            if(elem == eObject) {
-//                break;
-//            }
-//            if(elem instanceof Question question) {
-//                getCorrespondingAnswer(question, answers)
-//                    .flatMap(this::convertAnswerValue)
-//                    .ifPresentOrElse(value -> manager.put(question.getName(), value), () -> manager.put(question.getName(), null));
-//            }
-//        }
-
         var manager = getScopedVariables(eObject, answers);
-        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(), List.of(AnswerPackage.eINSTANCE, QuestionnairePackage.eINSTANCE));
+        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(this), List.of(AnswerPackage.eINSTANCE, QuestionnairePackage.eINSTANCE));
         var result = interpreter.evaluateExpression(manager.getVariables(), eObject.getCondition());
         return result.asBoolean().orElse(false);
     }
 
     public String evaluate(Question question, UserAnswers answers) {
         var manager = getScopedVariables(question, answers);
-        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(), List.of(AnswerPackage.eINSTANCE, QuestionnairePackage.eINSTANCE));
+        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(this), List.of(AnswerPackage.eINSTANCE, QuestionnairePackage.eINSTANCE));
         var result = interpreter.evaluateExpression(manager.getVariables(), question.getComputedExpression());
         return result.asString().orElse("");
     }
 
-    public VariableManager getScopedVariables(EObject obj, UserAnswers answers) {
+    public Diagnostic validateValue(Answer answer) {
+        return validator.validateAnswer(answer).orElse(null);
+    }
+
+    private VariableManager getScopedVariables(EObject obj, UserAnswers answers) {
         var manager = new VariableManager();
         manager.put(VariableManager.SELF, obj);
-        var elements = Streams.stream(((Form) EcoreUtil.getRootContainer(obj)).eAllContents()).toList();
-
-        EObject element = null;
-        for(var elem: elements) {
-            if(elem == obj) {
-                break;
-            }
-            if(elem instanceof Question question) {
+        for(var question: Utils.getScopedVariables(obj)) {
                 getCorrespondingAnswer(question, answers)
-                        .flatMap(this::convertAnswerValue)
-                        .ifPresentOrElse(value -> manager.put(question.getName(), value), () -> manager.put(question.getName(), null));
+                    .flatMap(this::convertAnswerValue)
+                    .ifPresentOrElse(value -> manager.put(question.getName(), value), () -> manager.put(question.getName(), null));
             }
-        }
         return manager;
     }
 

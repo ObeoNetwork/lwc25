@@ -79,6 +79,7 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
                 .labelExpression("Name")
                 .body(viewUtils.textfieldSetter(variable, "name"))
                 .valueExpression("aql:" + variable + ".name")
+                .diagnosticsExpression("aql: " + variable + ".validateQuestionName()")
                 .build();
 
         var questionTitleDescription = formBuilderHelper.newTextfieldDescription()
@@ -166,10 +167,11 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
                 .name(label)
                 .labelExpression(label)
                 .valueExpression(value)
+                .diagnosticsExpression("aql: " + variable + ".validateAqlExpression()")
                 .body(viewUtils.textfieldSetter(variable, resultField))
-//                .style(formBuilderHelper.newTextfieldDescriptionStyle()
-//                        .backgroundColor(colorProvider.getColor("Questionnaire_AQL"))
-//                        .build())
+                .style(formBuilderHelper.newTextfieldDescriptionStyle()
+                        .backgroundColor(colorProvider.getColor("Questionnaire_AQL"))
+                        .build())
                 .build();
     }
 

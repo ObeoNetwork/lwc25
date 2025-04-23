@@ -109,6 +109,7 @@ public class UserAnswerFormDescriptionProvider implements IRepresentationDescrip
                 .labelExpression("aql: " + currentQuestion + ".label")
                 .valueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").answer")
                 .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestion + ")", "answer"))
+                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").validateValue()")
                 .build();
 
         var ifIsDecimal = formBuilderHelper.newFormElementIf()
@@ -121,6 +122,7 @@ public class UserAnswerFormDescriptionProvider implements IRepresentationDescrip
                 .labelExpression("aql: " + currentQuestion + ".label")
                 .valueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").answer")
                 .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestion + ")", "answer"))
+                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").validateValue()")
                 .build();
 
         var ifIsDate = formBuilderHelper.newFormElementIf()
@@ -144,7 +146,8 @@ public class UserAnswerFormDescriptionProvider implements IRepresentationDescrip
                 .name("Money Question")
                 .labelExpression("aql: " + currentQuestion + ".label")
                 .valueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").answer + '€'")
-                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestion + ")", "answer"))
+                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestion + ")", "answer", "aql:newValue.toString().replaceAll('€', '')"))
+                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").validateValue()")
                 .build();
 
         var ifIsComputed = formBuilderHelper.newFormElementIf()
