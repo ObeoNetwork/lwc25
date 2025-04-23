@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="answer" nsURI="http://www.example.org/answer" nsPrefix="answer">
+  <eClassifiers xsi:type="ecore:EClass" name="Answer">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="answer" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="question" lowerBound="1"
+        eType="ecore:EClass ../../../../../lwc25-questionnaire-metamodel/src/main/resources/model/questionnaire.ecore#//Question"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UserAnswers">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="answers" upperBound="-1"
+        eType="#//Answer" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FormAnswers">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="form" lowerBound="1" eType="ecore:EClass ../../../../../lwc25-questionnaire-metamodel/src/main/resources/model/questionnaire.ecore#//Form"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="userAnswers" upperBound="-1"
+        eType="#//UserAnswers" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="userId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>

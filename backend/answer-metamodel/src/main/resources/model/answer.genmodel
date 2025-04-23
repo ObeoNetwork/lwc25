@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/lwc25-answer-metamodel/src/main/java" editDirectory="/lwc25-answer-metamodel-edit/src/main/java"
+    editorDirectory="lwc25-answer-metamodel-editor/src/main/java" modelPluginID="answer-metamodel"
+    modelName="Answer" editPluginClass="org.eclipse.sirius.answer.provider.AnswerEditPlugin"
+    editorPluginClass="org.eclipse.sirius.answer.presentation.AnswerEditorPlugin"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" codeFormatting="true"
+    commentFormatting="true" testsDirectory="/lwc25-answer-metamodel-tests/src/main/java"
+    testSuiteClass="org.eclipse.sirius.answer.tests.AnswerAllTests" importerID="org.eclipse.emf.importer.ecore"
+    bundleManifest="false" complianceLevel="17.0" copyrightFields="false" editPluginID="answer-metamodel-edit"
+    editorPluginID="answer-metamodel-editor" testsPluginID="answer-metamodel-tests"
+    usedGenPackages="../../../../../lwc25-questionnaire-metamodel/src/main/resources/model/questionnaire.genmodel#//questionnaire"
+    operationReflection="true" importOrganizing="true" pluginKey="answer" cleanup="true">
+  <foreignModel>answer.ecore</foreignModel>
+  <genPackages prefix="Answer" basePackage="org.eclipse.sirius" disposableProviderFactory="true"
+      ecorePackage="answer.ecore#/">
+    <genClasses ecoreClass="answer.ecore#//Answer">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute answer.ecore#//Answer/answer"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference answer.ecore#//Answer/question"/>
+    </genClasses>
+    <genClasses ecoreClass="answer.ecore#//UserAnswers">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute answer.ecore#//UserAnswers/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference answer.ecore#//UserAnswers/answers"/>
+    </genClasses>
+    <genClasses ecoreClass="answer.ecore#//FormAnswers">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference answer.ecore#//FormAnswers/form"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference answer.ecore#//FormAnswers/userAnswers"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute answer.ecore#//FormAnswers/userId"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
