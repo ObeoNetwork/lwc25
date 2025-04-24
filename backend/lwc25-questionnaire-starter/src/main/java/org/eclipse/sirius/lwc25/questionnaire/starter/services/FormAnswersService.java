@@ -15,6 +15,7 @@ import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import org.eclipse.sirius.ecore.extender.business.internal.accessor.ecore.EcoreIntrinsicExtender;
 import org.eclipse.sirius.questionnaire.ConditionalGroup;
 import org.eclipse.sirius.questionnaire.Question;
+import org.eclipse.sirius.questionnaire.QuestionReuse;
 import org.eclipse.sirius.questionnaire.QuestionnaireElement;
 import reactor.core.publisher.Sinks;
 

@@ -120,6 +120,15 @@ public interface QuestionnaireFactory extends EFactory {
 	MoneyType createMoneyType();
 
 	/**
+	 * Returns a new object of class '<em>Question Reuse</em>'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 *
+	 * @return a new object of class '<em>Question Reuse</em>'.
+	 * @generated
+	 */
+	QuestionReuse createQuestionReuse();
+
+	/**
 	 * Returns the package supported by this factory. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 *

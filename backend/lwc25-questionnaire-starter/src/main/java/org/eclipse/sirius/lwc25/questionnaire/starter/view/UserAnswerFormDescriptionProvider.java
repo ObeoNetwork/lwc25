@@ -54,11 +54,18 @@ public class UserAnswerFormDescriptionProvider implements IRepresentationDescrip
                 .children(getConditionalQuestionDescription())
                 .build();
 
+        var ifIsReuseQuestion = formBuilderHelper.newFormElementIf()
+                .name("If Element Is Question")
+                .predicateExpression("aql: it.oclIsKindOf(questionnaire::QuestionReuse)")
+                .children(getQuestionDescriptions("it.question").toArray(FormElementDescription[]::new))
+                .build();
+
         formDescription.getPages().add(pageDescription);
         pageDescription.getGroups().add(renderGroupDescription);
         renderGroupDescription.getChildren().add(forQuestionsDescription);
         forQuestionsDescription.getChildren().add(ifIsQuestion);
         forQuestionsDescription.getChildren().add(ifIsConditionalGroup);
+        forQuestionsDescription.getChildren().add(ifIsReuseQuestion);
 
         return formDescription;
     }

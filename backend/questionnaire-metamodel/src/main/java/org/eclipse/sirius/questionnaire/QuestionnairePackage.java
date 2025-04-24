@@ -579,6 +579,44 @@ public interface QuestionnairePackage extends EPackage {
 	int MONEY_TYPE_OPERATION_COUNT = TYPE_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the
+	 * '{@link org.eclipse.sirius.questionnaire.impl.QuestionReuseImpl <em>Question
+	 * Reuse</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @see org.eclipse.sirius.questionnaire.impl.QuestionReuseImpl
+	 * @see org.eclipse.sirius.questionnaire.impl.QuestionnairePackageImpl#getQuestionReuse()
+	 * @generated
+	 */
+	int QUESTION_REUSE = 14;
+
+	/**
+	 * The feature id for the '<em><b>Question</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 * @ordered
+	 */
+	int QUESTION_REUSE__QUESTION = QUESTIONNAIRE_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Question Reuse</em>' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 * @ordered
+	 */
+	int QUESTION_REUSE_FEATURE_COUNT = QUESTIONNAIRE_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Question Reuse</em>' class. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 * @ordered
+	 */
+	int QUESTION_REUSE_OPERATION_COUNT = QUESTIONNAIRE_ELEMENT_OPERATION_COUNT + 0;
+
+	/**
 	 * Returns the meta object for class
 	 * '{@link org.eclipse.sirius.questionnaire.Form <em>Form</em>}'. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -856,6 +894,29 @@ public interface QuestionnairePackage extends EPackage {
 	EClass getMoneyType();
 
 	/**
+	 * Returns the meta object for class
+	 * '{@link org.eclipse.sirius.questionnaire.QuestionReuse <em>Question
+	 * Reuse</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @return the meta object for class '<em>Question Reuse</em>'.
+	 * @see org.eclipse.sirius.questionnaire.QuestionReuse
+	 * @generated
+	 */
+	EClass getQuestionReuse();
+
+	/**
+	 * Returns the meta object for the reference
+	 * '{@link org.eclipse.sirius.questionnaire.QuestionReuse#getQuestion
+	 * <em>Question</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @return the meta object for the reference '<em>Question</em>'.
+	 * @see org.eclipse.sirius.questionnaire.QuestionReuse#getQuestion()
+	 * @see #getQuestionReuse()
+	 * @generated
+	 */
+	EReference getQuestionReuse_Question();
+
+	/**
 	 * Returns the factory that creates the instances of the model. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 *
@@ -1114,6 +1175,25 @@ public interface QuestionnairePackage extends EPackage {
 		 * @generated
 		 */
 		EClass MONEY_TYPE = eINSTANCE.getMoneyType();
+
+		/**
+		 * The meta object literal for the
+		 * '{@link org.eclipse.sirius.questionnaire.impl.QuestionReuseImpl <em>Question
+		 * Reuse</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 *
+		 * @see org.eclipse.sirius.questionnaire.impl.QuestionReuseImpl
+		 * @see org.eclipse.sirius.questionnaire.impl.QuestionnairePackageImpl#getQuestionReuse()
+		 * @generated
+		 */
+		EClass QUESTION_REUSE = eINSTANCE.getQuestionReuse();
+
+		/**
+		 * The meta object literal for the '<em><b>Question</b></em>' reference feature.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 *
+		 * @generated
+		 */
+		EReference QUESTION_REUSE__QUESTION = eINSTANCE.getQuestionReuse_Question();
 
 	}
 

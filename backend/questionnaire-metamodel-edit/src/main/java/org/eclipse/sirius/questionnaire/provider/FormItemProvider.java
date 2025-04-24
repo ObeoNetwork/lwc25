@@ -167,6 +167,9 @@ public class FormItemProvider extends ItemProviderAdapter implements IEditingDom
 
 		newChildDescriptors.add(createChildParameter(QuestionnairePackage.Literals.FORM__ELEMENTS,
 				QuestionnaireFactory.eINSTANCE.createQuestion()));
+
+		newChildDescriptors.add(createChildParameter(QuestionnairePackage.Literals.FORM__ELEMENTS,
+				QuestionnaireFactory.eINSTANCE.createQuestionReuse()));
 	}
 
 	/**

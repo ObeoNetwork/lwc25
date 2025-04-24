@@ -168,6 +168,9 @@ public class ConditionalGroupItemProvider extends ItemProviderAdapter implements
 
 		newChildDescriptors.add(createChildParameter(QuestionnairePackage.Literals.CONDITIONAL_GROUP__ELEMENTS,
 				QuestionnaireFactory.eINSTANCE.createQuestion()));
+
+		newChildDescriptors.add(createChildParameter(QuestionnairePackage.Literals.CONDITIONAL_GROUP__ELEMENTS,
+				QuestionnaireFactory.eINSTANCE.createQuestionReuse()));
 	}
 
 	/**

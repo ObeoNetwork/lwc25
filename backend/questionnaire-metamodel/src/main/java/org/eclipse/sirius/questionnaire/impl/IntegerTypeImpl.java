@@ -33,7 +33,7 @@ public class IntegerTypeImpl extends MinimalEObjectImpl.Container implements Int
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int MIN_EDEFAULT = 0;
+	protected static final Integer MIN_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getMin() <em>Min</em>}' attribute. <!--
@@ -43,7 +43,7 @@ public class IntegerTypeImpl extends MinimalEObjectImpl.Container implements Int
 	 * @generated
 	 * @ordered
 	 */
-	protected int min = MIN_EDEFAULT;
+	protected Integer min = MIN_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getMax() <em>Max</em>}' attribute. <!--
@@ -90,7 +90,7 @@ public class IntegerTypeImpl extends MinimalEObjectImpl.Container implements Int
 	 * @generated
 	 */
 	@Override
-	public int getMin() {
+	public Integer getMin() {
 		return min;
 	}
 
@@ -100,8 +100,8 @@ public class IntegerTypeImpl extends MinimalEObjectImpl.Container implements Int
 	 * @generated
 	 */
 	@Override
-	public void setMin(int newMin) {
-		int oldMin = min;
+	public void setMin(Integer newMin) {
+		Integer oldMin = min;
 		min = newMin;
 		if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET, QuestionnairePackage.INTEGER_TYPE__MIN, oldMin, min));
@@ -193,7 +193,7 @@ public class IntegerTypeImpl extends MinimalEObjectImpl.Container implements Int
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 		case QuestionnairePackage.INTEGER_TYPE__MIN:
-			return min != MIN_EDEFAULT;
+			return MIN_EDEFAULT == null ? min != null : !MIN_EDEFAULT.equals(min);
 		case QuestionnairePackage.INTEGER_TYPE__MAX:
 			return max != MAX_EDEFAULT;
 		}

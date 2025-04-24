@@ -44,5 +44,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute questionnaire.ecore#//NamedElement/name"/>
     </genClasses>
     <genClasses ecoreClass="questionnaire.ecore#//MoneyType"/>
+    <genClasses ecoreClass="questionnaire.ecore#//QuestionReuse">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference questionnaire.ecore#//QuestionReuse/question"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

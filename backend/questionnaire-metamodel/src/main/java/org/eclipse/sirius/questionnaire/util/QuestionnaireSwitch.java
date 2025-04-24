@@ -16,6 +16,7 @@ import org.eclipse.sirius.questionnaire.IntegerType;
 import org.eclipse.sirius.questionnaire.MoneyType;
 import org.eclipse.sirius.questionnaire.NamedElement;
 import org.eclipse.sirius.questionnaire.Question;
+import org.eclipse.sirius.questionnaire.QuestionReuse;
 import org.eclipse.sirius.questionnaire.QuestionnaireElement;
 import org.eclipse.sirius.questionnaire.QuestionnairePackage;
 import org.eclipse.sirius.questionnaire.StringType;
@@ -218,6 +219,17 @@ public class QuestionnaireSwitch<T> extends Switch<T> {
 			T result = caseMoneyType(moneyType);
 			if (result == null) {
 				result = caseType(moneyType);
+			}
+			if (result == null) {
+				result = defaultCase(theEObject);
+			}
+			return result;
+		}
+		case QuestionnairePackage.QUESTION_REUSE: {
+			QuestionReuse questionReuse = (QuestionReuse) theEObject;
+			T result = caseQuestionReuse(questionReuse);
+			if (result == null) {
+				result = caseQuestionnaireElement(questionReuse);
 			}
 			if (result == null) {
 				result = defaultCase(theEObject);
@@ -440,6 +452,21 @@ public class QuestionnaireSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseMoneyType(MoneyType object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Question
+	 * Reuse</em>'. <!-- begin-user-doc --> This implementation returns null;
+	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 *
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Question
+	 *         Reuse</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseQuestionReuse(QuestionReuse object) {
 		return null;
 	}
 

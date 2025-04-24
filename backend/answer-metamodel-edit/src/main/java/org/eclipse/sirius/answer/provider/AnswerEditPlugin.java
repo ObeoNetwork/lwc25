@@ -6,6 +6,10 @@ import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.sirius.questionnaire.provider.QuestionnaireEditPlugin;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
 /**
  * This is the central singleton for the Answer edit plugin. <!-- begin-user-doc
  * --> <!-- end-user-doc -->
@@ -46,6 +50,27 @@ public final class AnswerEditPlugin extends EMFPlugin {
 	@Override
 	public ResourceLocator getPluginResourceLocator() {
 		return plugin;
+	}
+
+	@Override
+	public Object doGetImage(String key) throws IOException  {
+		URL url = new URL(this.getBaseURL() + "icons/" + key + this.getExtensionFor(key));
+		InputStream inputStream = url.openStream();
+		inputStream.close();
+		return url;
+	}
+
+	private String getExtensionFor(String key) {
+		String result = ".gif";
+		int index = key.lastIndexOf('.');
+		if (index != -1) {
+			String extension = key.substring(index + 1);
+			if ("png".equalsIgnoreCase(extension) || "gif".equalsIgnoreCase(extension) || "bmp".equalsIgnoreCase(extension) || "ico".equalsIgnoreCase(extension) || "jpg".equalsIgnoreCase(extension)
+					|| "jpeg".equalsIgnoreCase(extension) || "tif".equalsIgnoreCase(extension) || "tiff".equalsIgnoreCase(extension) || "svg".equalsIgnoreCase(extension)) {
+				result = "";
+			}
+		}
+		return result;
 	}
 
 	/**

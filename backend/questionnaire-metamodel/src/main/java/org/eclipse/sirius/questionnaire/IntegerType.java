@@ -26,12 +26,12 @@ public interface IntegerType extends Type {
 	 * --> <!-- end-user-doc -->
 	 *
 	 * @return the value of the '<em>Min</em>' attribute.
-	 * @see #setMin(int)
+	 * @see #setMin(Integer)
 	 * @see org.eclipse.sirius.questionnaire.QuestionnairePackage#getIntegerType_Min()
 	 * @model
 	 * @generated
 	 */
-	int getMin();
+	Integer getMin();
 
 	/**
 	 * Sets the value of the
@@ -42,7 +42,7 @@ public interface IntegerType extends Type {
 	 * @see #getMin()
 	 * @generated
 	 */
-	void setMin(int value);
+	void setMin(Integer value);
 
 	/**
 	 * Returns the value of the '<em><b>Max</b></em>' attribute. <!-- begin-user-doc

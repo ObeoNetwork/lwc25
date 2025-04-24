@@ -2,6 +2,7 @@ package org.eclipse.sirius.lwc25.questionnaire.starter.view;
 
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.builder.generated.form.FormBuilders;
+import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
@@ -9,6 +10,7 @@ import org.eclipse.sirius.components.view.form.ContainerBorderLineStyle;
 import org.eclipse.sirius.components.view.form.FlexDirection;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.TextfieldDescription;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 
 public class QuestionnaireFormDescriptionProvider implements IRepresentationDescriptionProvider {
 
@@ -54,11 +56,26 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
                 .children(getFormGroupDescription(colorProvider))
                 .build();
 
+        var ifIsQuestionReuseDescription = formBuilderHelper.newFormElementIf()
+                        .name("If Is Reuse Question Description")
+                        .predicateExpression("aql:element.oclIsKindOf(questionnaire::QuestionReuse)")
+                        .build();
+
+        var reuseRefDescription = new ReferenceWidgetDescriptionBuilder()
+                .referenceOwnerExpression("aql: element")
+                .referenceNameExpression("question")
+                .body(viewUtils.textfieldSetter("element", "question", "aql:newValue"))
+                .labelExpression("aql: 'Question ' + self.elements->indexOf(element) + if element.question.name.size() == 0 then '' else ': reuse of ' + element.question.name endif")
+                .build();
+
+        ifIsQuestionReuseDescription.getChildren().add(reuseRefDescription);
+
         formDescription.getPages().add(pageDescription);
         pageDescription.getGroups().add(renderGroupDescription);
         renderGroupDescription.getChildren().add(forEachQuestionDescription);
         forEachQuestionDescription.getChildren().add(ifIsQuestionDescription);
         forEachQuestionDescription.getChildren().add(ifIsConditionalGroupDescription);
+        forEachQuestionDescription.getChildren().add(ifIsQuestionReuseDescription);
         renderGroupDescription.getChildren().add(this.createButtonDescription("self", true));
 
         return formDescription;
@@ -337,6 +354,17 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
                     .build();
             group.getChildren().add(createConditionalGroupButton);
         }
+
+        var createQuestionReuseButton = formBuilderHelper.newButtonDescription()
+                .name("Create Question Reuse Button")
+                .buttonLabelExpression("reuse question")
+                .body(viewBuilderHelper
+                        .newCreateInstance()
+                        .referenceName("elements")
+                        .typeName("questionnaire::QuestionReuse")
+                        .build())
+                .build();
+        group.getChildren().add(createQuestionReuseButton);
 
         return group;
     }

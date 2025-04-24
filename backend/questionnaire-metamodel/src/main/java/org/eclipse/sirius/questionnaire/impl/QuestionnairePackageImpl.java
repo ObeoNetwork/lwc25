@@ -18,6 +18,7 @@ import org.eclipse.sirius.questionnaire.IntegerType;
 import org.eclipse.sirius.questionnaire.MoneyType;
 import org.eclipse.sirius.questionnaire.NamedElement;
 import org.eclipse.sirius.questionnaire.Question;
+import org.eclipse.sirius.questionnaire.QuestionReuse;
 import org.eclipse.sirius.questionnaire.QuestionnaireElement;
 import org.eclipse.sirius.questionnaire.QuestionnaireFactory;
 import org.eclipse.sirius.questionnaire.QuestionnairePackage;
@@ -128,6 +129,13 @@ public class QuestionnairePackageImpl extends EPackageImpl implements Questionna
 	 * @generated
 	 */
 	private EClass moneyTypeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 */
+	private EClass questionReuseEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -443,6 +451,26 @@ public class QuestionnairePackageImpl extends EPackageImpl implements Questionna
 	 * @generated
 	 */
 	@Override
+	public EClass getQuestionReuse() {
+		return questionReuseEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 */
+	@Override
+	public EReference getQuestionReuse_Question() {
+		return (EReference) questionReuseEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 */
+	@Override
 	public QuestionnaireFactory getQuestionnaireFactory() {
 		return (QuestionnaireFactory) getEFactoryInstance();
 	}
@@ -505,6 +533,9 @@ public class QuestionnairePackageImpl extends EPackageImpl implements Questionna
 		createEAttribute(namedElementEClass, NAMED_ELEMENT__NAME);
 
 		moneyTypeEClass = createEClass(MONEY_TYPE);
+
+		questionReuseEClass = createEClass(QUESTION_REUSE);
+		createEReference(questionReuseEClass, QUESTION_REUSE__QUESTION);
 	}
 
 	/**
@@ -549,6 +580,7 @@ public class QuestionnairePackageImpl extends EPackageImpl implements Questionna
 		enumerationTypeEClass.getESuperTypes().add(this.getType());
 		enumerationLiteralEClass.getESuperTypes().add(this.getNamedElement());
 		moneyTypeEClass.getESuperTypes().add(this.getType());
+		questionReuseEClass.getESuperTypes().add(this.getQuestionnaireElement());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(formEClass, Form.class, "Form", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -589,7 +621,7 @@ public class QuestionnairePackageImpl extends EPackageImpl implements Questionna
 
 		initEClass(integerTypeEClass, IntegerType.class, "IntegerType", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getIntegerType_Min(), ecorePackage.getEInt(), "min", null, 0, 1, IntegerType.class,
+		initEAttribute(getIntegerType_Min(), ecorePackage.getEIntegerObject(), "min", null, 0, 1, IntegerType.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getIntegerType_Max(), ecorePackage.getEInt(), "max", null, 0, 1, IntegerType.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -616,6 +648,12 @@ public class QuestionnairePackageImpl extends EPackageImpl implements Questionna
 
 		initEClass(moneyTypeEClass, MoneyType.class, "MoneyType", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(questionReuseEClass, QuestionReuse.class, "QuestionReuse", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getQuestionReuse_Question(), this.getQuestion(), null, "question", null, 0, 1,
+				QuestionReuse.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

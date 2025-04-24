@@ -19,6 +19,7 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.sirius.questionnaire.provider.spec.*;
 import org.eclipse.sirius.questionnaire.util.QuestionnaireAdapterFactory;
 
 /**
@@ -85,12 +86,12 @@ public class QuestionnaireItemProviderAdapterFactory extends QuestionnaireAdapte
 	 * This creates an adapter for a {@link org.eclipse.sirius.questionnaire.Form}.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 *
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Adapter createFormAdapter() {
 		if (formItemProvider == null) {
-			formItemProvider = new FormItemProvider(this);
+			formItemProvider = new FormItemProviderSpec(this);
 		}
 
 		return formItemProvider;
@@ -110,12 +111,12 @@ public class QuestionnaireItemProviderAdapterFactory extends QuestionnaireAdapte
 	 * {@link org.eclipse.sirius.questionnaire.ConditionalGroup}. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 *
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Adapter createConditionalGroupAdapter() {
 		if (conditionalGroupItemProvider == null) {
-			conditionalGroupItemProvider = new ConditionalGroupItemProvider(this);
+			conditionalGroupItemProvider = new ConditionalGroupItemProviderSpec(this);
 		}
 
 		return conditionalGroupItemProvider;
@@ -135,12 +136,12 @@ public class QuestionnaireItemProviderAdapterFactory extends QuestionnaireAdapte
 	 * {@link org.eclipse.sirius.questionnaire.Question}. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 *
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Adapter createQuestionAdapter() {
 		if (questionItemProvider == null) {
-			questionItemProvider = new QuestionItemProvider(this);
+			questionItemProvider = new QuestionItemProviderSpec(this);
 		}
 
 		return questionItemProvider;
@@ -160,12 +161,12 @@ public class QuestionnaireItemProviderAdapterFactory extends QuestionnaireAdapte
 	 * {@link org.eclipse.sirius.questionnaire.BooleanType}. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 *
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Adapter createBooleanTypeAdapter() {
 		if (booleanTypeItemProvider == null) {
-			booleanTypeItemProvider = new BooleanTypeItemProvider(this);
+			booleanTypeItemProvider = new BooleanTypeItemProviderSpec(this);
 		}
 
 		return booleanTypeItemProvider;
@@ -185,12 +186,12 @@ public class QuestionnaireItemProviderAdapterFactory extends QuestionnaireAdapte
 	 * {@link org.eclipse.sirius.questionnaire.DateType}. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 *
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Adapter createDateTypeAdapter() {
 		if (dateTypeItemProvider == null) {
-			dateTypeItemProvider = new DateTypeItemProvider(this);
+			dateTypeItemProvider = new DateTypeItemProviderSpec(this);
 		}
 
 		return dateTypeItemProvider;
@@ -210,12 +211,12 @@ public class QuestionnaireItemProviderAdapterFactory extends QuestionnaireAdapte
 	 * {@link org.eclipse.sirius.questionnaire.IntegerType}. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 *
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Adapter createIntegerTypeAdapter() {
 		if (integerTypeItemProvider == null) {
-			integerTypeItemProvider = new IntegerTypeItemProvider(this);
+			integerTypeItemProvider = new IntegerTypeItemProviderSpec(this);
 		}
 
 		return integerTypeItemProvider;
@@ -235,12 +236,12 @@ public class QuestionnaireItemProviderAdapterFactory extends QuestionnaireAdapte
 	 * {@link org.eclipse.sirius.questionnaire.DecimalType}. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 *
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Adapter createDecimalTypeAdapter() {
 		if (decimalTypeItemProvider == null) {
-			decimalTypeItemProvider = new DecimalTypeItemProvider(this);
+			decimalTypeItemProvider = new DecimalTypeItemProviderSpec(this);
 		}
 
 		return decimalTypeItemProvider;
@@ -260,12 +261,12 @@ public class QuestionnaireItemProviderAdapterFactory extends QuestionnaireAdapte
 	 * {@link org.eclipse.sirius.questionnaire.StringType}. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 *
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Adapter createStringTypeAdapter() {
 		if (stringTypeItemProvider == null) {
-			stringTypeItemProvider = new StringTypeItemProvider(this);
+			stringTypeItemProvider = new StringTypeItemProviderSpec(this);
 		}
 
 		return stringTypeItemProvider;
@@ -285,12 +286,12 @@ public class QuestionnaireItemProviderAdapterFactory extends QuestionnaireAdapte
 	 * {@link org.eclipse.sirius.questionnaire.EnumerationType}. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
 	 *
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Adapter createEnumerationTypeAdapter() {
 		if (enumerationTypeItemProvider == null) {
-			enumerationTypeItemProvider = new EnumerationTypeItemProvider(this);
+			enumerationTypeItemProvider = new EnumerationTypeItemProviderSpec(this);
 		}
 
 		return enumerationTypeItemProvider;
@@ -310,12 +311,12 @@ public class QuestionnaireItemProviderAdapterFactory extends QuestionnaireAdapte
 	 * {@link org.eclipse.sirius.questionnaire.EnumerationLiteral}. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 *
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Adapter createEnumerationLiteralAdapter() {
 		if (enumerationLiteralItemProvider == null) {
-			enumerationLiteralItemProvider = new EnumerationLiteralItemProvider(this);
+			enumerationLiteralItemProvider = new EnumerationLiteralItemProviderSpec(this);
 		}
 
 		return enumerationLiteralItemProvider;
@@ -335,15 +336,40 @@ public class QuestionnaireItemProviderAdapterFactory extends QuestionnaireAdapte
 	 * {@link org.eclipse.sirius.questionnaire.MoneyType}. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 *
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Adapter createMoneyTypeAdapter() {
 		if (moneyTypeItemProvider == null) {
-			moneyTypeItemProvider = new MoneyTypeItemProvider(this);
+			moneyTypeItemProvider = new MoneyTypeItemProviderSpec(this);
 		}
 
 		return moneyTypeItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all
+	 * {@link org.eclipse.sirius.questionnaire.QuestionReuse} instances. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 */
+	protected QuestionReuseItemProvider questionReuseItemProvider;
+
+	/**
+	 * This creates an adapter for a
+	 * {@link org.eclipse.sirius.questionnaire.QuestionReuse}. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 *
+	 * @generated NOT
+	 */
+	@Override
+	public Adapter createQuestionReuseAdapter() {
+		if (questionReuseItemProvider == null) {
+			questionReuseItemProvider = new QuestionReuseItemProviderSpec(this);
+		}
+
+		return questionReuseItemProvider;
 	}
 
 	/**
@@ -481,6 +507,9 @@ public class QuestionnaireItemProviderAdapterFactory extends QuestionnaireAdapte
 		}
 		if (moneyTypeItemProvider != null) {
 			moneyTypeItemProvider.dispose();
+		}
+		if (questionReuseItemProvider != null) {
+			questionReuseItemProvider.dispose();
 		}
 	}
 

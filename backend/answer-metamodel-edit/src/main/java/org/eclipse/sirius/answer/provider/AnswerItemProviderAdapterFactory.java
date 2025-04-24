@@ -19,6 +19,9 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.sirius.answer.provider.spec.AnswerItemProviderSpec;
+import org.eclipse.sirius.answer.provider.spec.FormAnswersItemProviderSpec;
+import org.eclipse.sirius.answer.provider.spec.UserAnswersItemProviderSpec;
 import org.eclipse.sirius.answer.util.AnswerAdapterFactory;
 
 /**
@@ -90,7 +93,7 @@ public class AnswerItemProviderAdapterFactory extends AnswerAdapterFactory
 	@Override
 	public Adapter createAnswerAdapter() {
 		if (answerItemProvider == null) {
-			answerItemProvider = new AnswerItemProvider(this);
+			answerItemProvider = new AnswerItemProviderSpec(this);
 		}
 
 		return answerItemProvider;
@@ -114,7 +117,7 @@ public class AnswerItemProviderAdapterFactory extends AnswerAdapterFactory
 	@Override
 	public Adapter createUserAnswersAdapter() {
 		if (userAnswersItemProvider == null) {
-			userAnswersItemProvider = new UserAnswersItemProvider(this);
+			userAnswersItemProvider = new UserAnswersItemProviderSpec(this);
 		}
 
 		return userAnswersItemProvider;
@@ -138,7 +141,7 @@ public class AnswerItemProviderAdapterFactory extends AnswerAdapterFactory
 	@Override
 	public Adapter createFormAnswersAdapter() {
 		if (formAnswersItemProvider == null) {
-			formAnswersItemProvider = new FormAnswersItemProvider(this);
+			formAnswersItemProvider = new FormAnswersItemProviderSpec(this);
 		}
 
 		return formAnswersItemProvider;

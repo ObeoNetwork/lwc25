@@ -17,6 +17,7 @@ import org.eclipse.sirius.questionnaire.Form;
 import org.eclipse.sirius.questionnaire.IntegerType;
 import org.eclipse.sirius.questionnaire.MoneyType;
 import org.eclipse.sirius.questionnaire.Question;
+import org.eclipse.sirius.questionnaire.QuestionReuse;
 import org.eclipse.sirius.questionnaire.QuestionnaireFactory;
 import org.eclipse.sirius.questionnaire.QuestionnairePackage;
 import org.eclipse.sirius.questionnaire.StringType;
@@ -87,6 +88,8 @@ public class QuestionnaireFactoryImpl extends EFactoryImpl implements Questionna
 			return createEnumerationLiteral();
 		case QuestionnairePackage.MONEY_TYPE:
 			return createMoneyType();
+		case QuestionnairePackage.QUESTION_REUSE:
+			return createQuestionReuse();
 		default:
 			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -211,6 +214,17 @@ public class QuestionnaireFactoryImpl extends EFactoryImpl implements Questionna
 	public MoneyType createMoneyType() {
 		MoneyTypeImpl moneyType = new MoneyTypeImpl();
 		return moneyType;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 */
+	@Override
+	public QuestionReuse createQuestionReuse() {
+		QuestionReuseImpl questionReuse = new QuestionReuseImpl();
+		return questionReuse;
 	}
 
 	/**

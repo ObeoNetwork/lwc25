@@ -17,6 +17,7 @@ import org.eclipse.sirius.questionnaire.IntegerType;
 import org.eclipse.sirius.questionnaire.MoneyType;
 import org.eclipse.sirius.questionnaire.NamedElement;
 import org.eclipse.sirius.questionnaire.Question;
+import org.eclipse.sirius.questionnaire.QuestionReuse;
 import org.eclipse.sirius.questionnaire.QuestionnaireElement;
 import org.eclipse.sirius.questionnaire.QuestionnairePackage;
 import org.eclipse.sirius.questionnaire.StringType;
@@ -145,6 +146,11 @@ public class QuestionnaireAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseMoneyType(MoneyType object) {
 			return createMoneyTypeAdapter();
+		}
+
+		@Override
+		public Adapter caseQuestionReuse(QuestionReuse object) {
+			return createQuestionReuseAdapter();
 		}
 
 		@Override
@@ -373,6 +379,21 @@ public class QuestionnaireAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createMoneyTypeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class
+	 * '{@link org.eclipse.sirius.questionnaire.QuestionReuse <em>Question
+	 * Reuse</em>}'. <!-- begin-user-doc --> This default implementation returns
+	 * null so that we can easily ignore cases; it's useful to ignore a case when
+	 * inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 *
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.questionnaire.QuestionReuse
+	 * @generated
+	 */
+	public Adapter createQuestionReuseAdapter() {
 		return null;
 	}
 

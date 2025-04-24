@@ -15,20 +15,17 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
-import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
-import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.sirius.questionnaire.IntegerType;
 import org.eclipse.sirius.questionnaire.QuestionnairePackage;
 
 /**
  * This is the item provider adapter for a
- * {@link org.eclipse.sirius.questionnaire.IntegerType} object. <!--
+ * {@link org.eclipse.sirius.questionnaire.QuestionReuse} object. <!--
  * begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
-public class IntegerTypeItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
+public class QuestionReuseItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
 		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 	/**
 	 * This constructs an instance from a factory and a notifier. <!--
@@ -36,7 +33,7 @@ public class IntegerTypeItemProvider extends ItemProviderAdapter implements IEdi
 	 *
 	 * @generated
 	 */
-	public IntegerTypeItemProvider(AdapterFactory adapterFactory) {
+	public QuestionReuseItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -51,52 +48,34 @@ public class IntegerTypeItemProvider extends ItemProviderAdapter implements IEdi
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addMinPropertyDescriptor(object);
-			addMaxPropertyDescriptor(object);
+			addQuestionPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Min feature. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds a property descriptor for the Question feature. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 *
 	 * @generated
 	 */
-	protected void addMinPropertyDescriptor(Object object) {
+	protected void addQuestionPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
 				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
-						getResourceLocator(), getString("_UI_IntegerType_min_feature"),
-						getString("_UI_PropertyDescriptor_description", "_UI_IntegerType_min_feature",
-								"_UI_IntegerType_type"),
-						QuestionnairePackage.Literals.INTEGER_TYPE__MIN, true, false, false,
-						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+						getResourceLocator(), getString("_UI_QuestionReuse_question_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_QuestionReuse_question_feature",
+								"_UI_QuestionReuse_type"),
+						QuestionnairePackage.Literals.QUESTION_REUSE__QUESTION, true, false, true, null, null, null));
 	}
 
 	/**
-	 * This adds a property descriptor for the Max feature. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 *
-	 * @generated
-	 */
-	protected void addMaxPropertyDescriptor(Object object) {
-		itemPropertyDescriptors
-				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
-						getResourceLocator(), getString("_UI_IntegerType_max_feature"),
-						getString("_UI_PropertyDescriptor_description", "_UI_IntegerType_max_feature",
-								"_UI_IntegerType_type"),
-						QuestionnairePackage.Literals.INTEGER_TYPE__MAX, true, false, false,
-						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
-	}
-
-	/**
-	 * This returns IntegerType.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * This returns QuestionReuse.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 *
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/IntegerType"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/QuestionReuse"));
 	}
 
 	/**
@@ -107,10 +86,7 @@ public class IntegerTypeItemProvider extends ItemProviderAdapter implements IEdi
 	 */
 	@Override
 	public String getText(Object object) {
-		Integer labelValue = ((IntegerType) object).getMin();
-		String label = labelValue == null ? null : labelValue.toString();
-		return label == null || label.length() == 0 ? getString("_UI_IntegerType_type")
-				: getString("_UI_IntegerType_type") + " " + label;
+		return getString("_UI_QuestionReuse_type");
 	}
 
 	/**
@@ -123,13 +99,6 @@ public class IntegerTypeItemProvider extends ItemProviderAdapter implements IEdi
 	@Override
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
-
-		switch (notification.getFeatureID(IntegerType.class)) {
-		case QuestionnairePackage.INTEGER_TYPE__MIN:
-		case QuestionnairePackage.INTEGER_TYPE__MAX:
-			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-			return;
-		}
 		super.notifyChanged(notification);
 	}
 

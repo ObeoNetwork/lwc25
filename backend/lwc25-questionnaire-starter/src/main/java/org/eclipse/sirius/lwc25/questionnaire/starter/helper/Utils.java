@@ -5,6 +5,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.questionnaire.ConditionalGroup;
 import org.eclipse.sirius.questionnaire.Question;
+import org.eclipse.sirius.questionnaire.QuestionReuse;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -23,6 +24,8 @@ public class Utils {
                 questions.add(question);
             } else if(current instanceof ConditionalGroup group && !EcoreUtil.isAncestor(group, obj)) {
                 iterator.prune();
+            } else if(current instanceof QuestionReuse reuse) {
+                questions.add(reuse.getQuestion());
             }
         }
         return questions;
