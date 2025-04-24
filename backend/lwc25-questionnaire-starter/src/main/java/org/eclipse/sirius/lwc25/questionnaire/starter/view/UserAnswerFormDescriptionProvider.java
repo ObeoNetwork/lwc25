@@ -150,6 +150,21 @@ public class UserAnswerFormDescriptionProvider implements IRepresentationDescrip
                 .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").validateValue()")
                 .build();
 
+        var ifIsEnumeration = formBuilderHelper.newFormElementIf()
+                .name("If Element Is Enumeration Question")
+                .predicateExpression("aql: " + currentQuestion + ".type.oclIsKindOf(questionnaire::EnumerationType)")
+                .build();
+
+        var enumerationSelectDescription = formBuilderHelper.newSelectDescription()
+                .name("Enumeration Question")
+                .labelExpression("aql: " + currentQuestion + ".label")
+                .valueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").answer")
+                .candidatesExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").question.type.enumerationliteral.name")
+                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestion + ")", "answer"))
+                .candidateLabelExpression("aql: candidate")
+                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").validateValue()")
+                .build();
+
         var ifIsComputed = formBuilderHelper.newFormElementIf()
                 .name("If Question Is Computed")
                 .predicateExpression("aql: " + currentQuestion + ".computedExpression.size() > 0")
@@ -168,12 +183,14 @@ public class UserAnswerFormDescriptionProvider implements IRepresentationDescrip
         ifIsDecimal.getChildren().add(decimalTextfieldDescription);
         ifIsDate.getChildren().add(dateDatePickerDescription);
         ifIsMoney.getChildren().add(moneyTextfieldDescription);
+        ifIsEnumeration.getChildren().add(enumerationSelectDescription);
         ifThereIsAnAnswer.getChildren().add(ifIsString);
         ifThereIsAnAnswer.getChildren().add(ifIsBoolean);
         ifThereIsAnAnswer.getChildren().add(ifIsInteger);
         ifThereIsAnAnswer.getChildren().add(ifIsDecimal);
         ifThereIsAnAnswer.getChildren().add(ifIsDate);
         ifThereIsAnAnswer.getChildren().add(ifIsMoney);
+        ifThereIsAnAnswer.getChildren().add(ifIsEnumeration);
         ifIsNotComputed.getChildren().add(ifThereIsAnAnswer);
 
         return List.of(ifThereIsAnAnswer, ifIsComputed);

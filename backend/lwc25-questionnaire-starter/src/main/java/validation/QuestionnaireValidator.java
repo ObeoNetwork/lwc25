@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.sirius.answer.Answer;
 import org.eclipse.sirius.lwc25.questionnaire.starter.services.ValidationService;
+import org.eclipse.sirius.questionnaire.ConditionalGroup;
 import org.eclipse.sirius.questionnaire.Question;
 
 import java.util.Map;
@@ -29,6 +30,8 @@ public class QuestionnaireValidator implements EValidator {
         boolean isValid = true;
         if (eObject instanceof Question question) {
             isValid = this.validateQuestion(question, diagnostics);
+        } else if(eObject instanceof ConditionalGroup group) {
+            isValid = this.validateConditionalGroup(group, diagnostics);
         }
         return isValid;
     }
@@ -41,8 +44,14 @@ public class QuestionnaireValidator implements EValidator {
     public boolean validateQuestion(Question question, DiagnosticChain diagnostics) {
         var result = validator.validateQuestionName(question);
         result.ifPresent(diagnostics::add);
-        var aqlResult = validator.validateAqlExpression(question, question.getComputedExpression(), "computedExpression");
+        var aqlResult = validator.validateAqlExpression(question, question.getComputedExpression(), "computedExpression", null);
         aqlResult.forEach(diagnostics::add);
         return result.isEmpty() && aqlResult.isEmpty();
+    }
+
+    public boolean validateConditionalGroup(ConditionalGroup group, DiagnosticChain diagnostics) {
+        var aqlResult = validator.validateAqlExpression(group, group.getCondition(), "condition", Boolean.class.getSimpleName());
+        aqlResult.forEach(diagnostics::add);
+        return aqlResult.isEmpty();
     }
 }

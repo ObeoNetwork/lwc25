@@ -6,6 +6,7 @@ import org.eclipse.sirius.answer.AnswerPackage;
 import org.eclipse.sirius.lwc25.questionnaire.starter.services.ValidationService;
 import org.eclipse.sirius.questionnaire.QuestionnairePackage;
 import org.springframework.context.annotation.Configuration;
+import validation.QuestionnaireValidator;
 import validation.UserAnswerValidator;
 
 @Configuration
@@ -26,7 +27,7 @@ public class QuestionnaireValidationConfiguration {
 
     @PostConstruct
     public void registerQuestionnaireFormValidator() {
-        this.eValidatorRegistry.put(QuestionnairePackage.eINSTANCE, new UserAnswerValidator(validator));
+        this.eValidatorRegistry.put(QuestionnairePackage.eINSTANCE, new QuestionnaireValidator(validator));
     }
 
 

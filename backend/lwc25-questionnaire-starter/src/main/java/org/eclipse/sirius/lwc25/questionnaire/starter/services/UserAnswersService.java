@@ -29,6 +29,9 @@ public class UserAnswersService {
     }
 
     public boolean isValid(ConditionalGroup eObject, UserAnswers answers) {
+        if(eObject.getCondition() == null) {
+            return false;
+        }
         var manager = getScopedVariables(eObject, answers);
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(this), List.of(AnswerPackage.eINSTANCE, QuestionnairePackage.eINSTANCE));
         var result = interpreter.evaluateExpression(manager.getVariables(), eObject.getCondition());

@@ -79,6 +79,7 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
                 .labelExpression("Name")
                 .body(viewUtils.textfieldSetter(variable, "name"))
                 .valueExpression("aql:" + variable + ".name")
+                .helpExpression("The name of the question. Not displayed to the questionnaire user but can be used in the different expressions as a variable containing the user's answer for this question.")
                 .diagnosticsExpression("aql: " + variable + ".validateQuestionName()")
                 .build();
 
@@ -86,6 +87,7 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
                 .name("Question Title Description")
                 .labelExpression("Title")
                 .body(viewUtils.textfieldSetter(variable, "label"))
+                .helpExpression("The label of the question, displayed to the questionnaire user.")
                 .valueExpression("aql:" + variable + ".label")
                 .build();
 
@@ -93,6 +95,7 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
                 .name("Is It A Computed Question?")
                 .labelExpression("Is it a computed question?")
                 .valueExpression("aql: " + variable + ".computedExpression.size() > 0")
+                .helpExpression("If checked, the question will be displayed as a read-only string resulting of the evaluation of an expression.")
                 .body(this.viewBuilderHelper.newChangeContext()
                     .expression("aql:" + variable)
                     .children(this.viewBuilderHelper.newSetValue()
@@ -107,7 +110,12 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
                 .predicateExpression("aql: " + variable + ".computedExpression.size() > 0")
                 .build();
 
-        var computedExpressionDescription = getAqlField(colorProvider, "Computed expression", "aql: " + variable + ".computedExpression", variable, "computedExpression");
+        var computedExpressionDescription = getAqlField(colorProvider,
+                "Computed expression",
+                "aql: " + variable + ".computedExpression", variable,
+                "computedExpression",
+                "aql: 'An AQL expression to compute the string to display. Available variables: ' + " + variable + ".getScopedVariablesAsString() + '.'"
+        );
         ifIsComputed.getChildren().add(computedExpressionDescription);
 
         var selectTypeDescription = formBuilderHelper.newSelectDescription()
@@ -116,14 +124,121 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
                         .candidatesExpression("aql:questionnaire::Form.eContainer().eContents()->select(clazz | clazz.eSuperTypes->includes(questionnaire::Type))")
                         .candidateLabelExpression("aql: candidate.name.replace('Type', '')")
                         .valueExpression("aql: " + variable + ".type.eClass()")
+                        .helpExpression("The type of the expected answer. Enables validations for the answer and determine the widget to use.")
                         .body(viewBuilderHelper.newChangeContext().expression("aql: " + variable + ".newInstance(newValue)").build())
                         .build();
+
+        var ifIsIntegerType = formBuilderHelper.newFormElementIf()
+                        .name("If Is Integer Question")
+                        .predicateExpression("aql: " + variable + ".type.oclIsKindOf(questionnaire::IntegerType)")
+                        .build();
+
+        var minBoundDescription = formBuilderHelper.newTextfieldDescription()
+                        .name("Min Bound Description")
+                        .labelExpression("Min bound")
+                        .valueExpression("aql: " + variable + ".type.min")
+                        .helpExpression("The user's answer must be greater than or equal to this number.")
+                        .body(viewBuilderHelper.newIf()
+                                .conditionExpression("aql: newValue.isEmpty()")
+                                .children(viewBuilderHelper.newUnsetValue()
+                                        .featureName("min")
+                                        .elementExpression("TODO")
+                                        .build())
+                                .build(),
+                                viewBuilderHelper.newIf()
+                                        .conditionExpression("aql: not newValue.isEmpty()")
+                                        .children(viewUtils.textfieldSetter(variable, "min"))
+                                        .build())
+                        .build();
+
+        var maxBoundDescription = formBuilderHelper.newTextfieldDescription()
+                .name("Max Bound Description")
+                .labelExpression("Max bound")
+                .helpExpression("The user's answer must be lower than or equal to this number.")
+                .valueExpression("aql: " + variable + ".type.max")
+                .body(viewBuilderHelper.newIf()
+                                .conditionExpression("aql: newValue.isEmpty()")
+                                .children(viewBuilderHelper.newUnsetValue()
+                                        .featureName("max")
+                                        .elementExpression("TODO")
+                                        .build())
+                                .build(),
+                        viewBuilderHelper.newIf()
+                                .conditionExpression("aql: not newValue.isEmpty()")
+                                .children(viewUtils.textfieldSetter(variable, "max"))
+                                .build())
+                .build();
+        ifIsIntegerType.getChildren().add(minBoundDescription);
+        ifIsIntegerType.getChildren().add(maxBoundDescription);
+
+        var ifIsEnumerationType = formBuilderHelper.newFormElementIf()
+                .name("If Is Enumeration Question")
+                .predicateExpression("aql: " + variable + ".type.oclIsKindOf(questionnaire::EnumerationType)")
+                .build();
+
+        var literalsLabelDescription = formBuilderHelper.newLabelDescription()
+                .labelExpression("Possible values:")
+                .build();
+
+        var forEachLiteral = formBuilderHelper.newFormElementFor()
+                .name("For Each Literal")
+                .iterableExpression("aql: " + variable + ".type.enumerationliteral")
+                .iterator("literal")
+                .build();
+
+        var literalFlexbox = formBuilderHelper.newFlexboxContainerDescription()
+                .labelExpression("aql: 'Literal ' + literal.eContainer().enumerationliteral->indexOf(literal)")
+                .name("Horizontal Layout")
+                .build();
+
+        var literalTextFieldDescription = formBuilderHelper.newTextfieldDescription()
+                .name("Literal Description")
+                .valueExpression("aql: literal.name")
+                .body(viewUtils.textfieldSetter("literal", "name"))
+                .build();
+
+        var deleteLiteralDescription = formBuilderHelper.newButtonDescription()
+                .name("Delete Literal")
+                .imageExpression("aql:'/icons/questionnaire/trash.svg'")
+                .body(viewBuilderHelper.newChangeContext()
+                        .expression("aql: literal.eContainer()")
+                        .children(viewBuilderHelper.newUnsetValue()
+                                .featureName("enumerationliteral")
+                                .elementExpression("aql: literal")
+                                .build())
+                        .build())
+                .style(formBuilderHelper.newButtonDescriptionStyle()
+                        .backgroundColor(colorProvider.getColor("Questionnaire_White"))
+                        .build())
+                .build();
+
+        literalFlexbox.getChildren().add(literalTextFieldDescription);
+        literalFlexbox.getChildren().add(deleteLiteralDescription);
+
+        var newLiteralButtonDescription = formBuilderHelper.newButtonDescription()
+                        .name("New Literal")
+                        .buttonLabelExpression("Add value")
+                                .body(viewBuilderHelper.newChangeContext()
+                                        .expression("aql: " + variable + ".type")
+                                        .children(viewBuilderHelper.newCreateInstance()
+                                                .typeName("questionnaire::EnumerationLiteral")
+                                                .referenceName("enumerationliteral")
+                                                .build())
+                                        .build())
+                        .build();
+
+        ifIsEnumerationType.getChildren().add(literalsLabelDescription);
+        ifIsEnumerationType.getChildren().add(forEachLiteral);
+        forEachLiteral.getChildren().add(literalFlexbox);
+        ifIsEnumerationType.getChildren().add(newLiteralButtonDescription);
 
         questionContainer.getChildren().add(questionNameDescription);
         questionContainer.getChildren().add(questionTitleDescription);
         questionContainer.getChildren().add(isComputedDescription);
         questionContainer.getChildren().add(ifIsComputed);
         questionContainer.getChildren().add(selectTypeDescription);
+        questionContainer.getChildren().add(ifIsIntegerType);
+        questionContainer.getChildren().add(ifIsEnumerationType);
         return questionContainer;
     }
 
@@ -137,16 +252,13 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
                 .labelExpression("aql:'If ' + element.condition")
                 .build();
 
-        var conditionDescription = getAqlField(colorProvider, "Group condition", "aql:element.condition", "element", "condition");
-//        var conditionDescription = formBuilderHelper.newTextfieldDescription()
-//                .name("Condition expression")
-//                .labelExpression("Group condition")
-//                .valueExpression("aql:element.condition")
-//                .body(viewUtils.textfieldSetter("element", "condition"))
-//                .style(formBuilderHelper.newTextfieldDescriptionStyle()
-//                        .backgroundColor(colorProvider.getColor("Questionnaire_AQL"))
-//                        .build())
-//                .build();
+        var conditionDescription = getAqlField(colorProvider,
+                "Group condition",
+                "aql:element.condition",
+                "element",
+                "condition",
+                "aql: 'An AQL expression determining whether the questions of the block are displayed to the questionnaire user. Available variables: ' + element.getScopedVariablesAsString() + '.'"
+        );
 
         var forEachQuestionDescription = formBuilderHelper.newFormElementFor()
                 .iterableExpression("aql:element.elements")
@@ -162,11 +274,12 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
         return conditionalGroupGroupDescription;
     }
 
-    public TextfieldDescription getAqlField(IColorProvider colorProvider, String label, String value, String variable, String resultField) {
+    public TextfieldDescription getAqlField(IColorProvider colorProvider, String label, String value, String variable, String resultField, String helpExpression) {
         return formBuilderHelper.newTextfieldDescription()
                 .name(label)
                 .labelExpression(label)
                 .valueExpression(value)
+                .helpExpression(helpExpression)
                 .diagnosticsExpression("aql: " + variable + ".validateAqlExpression()")
                 .body(viewUtils.textfieldSetter(variable, resultField))
                 .style(formBuilderHelper.newTextfieldDescriptionStyle()
@@ -210,6 +323,8 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
                         .build())
                 .build();
 
+        group.getChildren().add(createQuestionButton);
+
         if(addConditionalGroup) {
             var createConditionalGroupButton = formBuilderHelper.newButtonDescription()
                     .name("Create Conditional Group Button")
@@ -223,7 +338,6 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
             group.getChildren().add(createConditionalGroupButton);
         }
 
-        group.getChildren().add(createQuestionButton);
         return group;
     }
 

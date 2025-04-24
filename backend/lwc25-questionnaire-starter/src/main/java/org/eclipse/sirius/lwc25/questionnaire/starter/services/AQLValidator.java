@@ -12,6 +12,7 @@ import org.eclipse.sirius.questionnaire.*;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,14 +35,17 @@ public class AQLValidator {
         ePackages.stream().filter(this::isValidEPackage).forEach(queryEnvironment::registerEPackage);
     }
 
-    public IValidationResult validate(String expressionBody, List<Question> questionVariables) {
+    public Optional<IValidationResult> validate(String expressionBody, List<Question> questionVariables) {
+        if(expressionBody == null || expressionBody.isBlank()) {
+            return Optional.empty();
+        }
         String expression = new ExpressionConverter().convertExpression(expressionBody);
         if (expression.startsWith(AQL_PREFIX)) {
             expression = expression.substring(AQL_PREFIX.length());
         }
         var types = questionVariables.stream()
                 .collect(Collectors.toMap(NamedElement::getName, question -> Set.of(this.questionToIType(question.getType()))));
-        return QueryValidation.newEngine(this.queryEnvironment).validate(expression, types);
+        return Optional.of(QueryValidation.newEngine(this.queryEnvironment).validate(expression, types));
     }
 
     private boolean isValidEPackage(EPackage ePackage) {
