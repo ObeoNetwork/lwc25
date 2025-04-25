@@ -18,7 +18,7 @@ public class UserAnswerFormDescriptionProvider implements IRepresentationDescrip
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
         var formDescription = formBuilderHelper.newFormDescription()
-                .name("Form Form Description")
+                .name("User Answer Form Description")
                 .domainType("answer::UserAnswers")
                 .titleExpression("aql:self.name + ' answer form'")
                 .build();

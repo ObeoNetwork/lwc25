@@ -20,7 +20,7 @@ public class FormAnswerDescriptionProvider implements IRepresentationDescription
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
         var formDescription = formBuilderHelper.newFormDescription()
-                .name("Form Form Description")
+                .name("Form Answer Description")
                 .domainType("answer::FormAnswers")
                 .titleExpression("Form Main Page")
                 .build();
@@ -99,20 +99,36 @@ public class FormAnswerDescriptionProvider implements IRepresentationDescription
                 .valueExpression("aql: 'Number of answers: ' + self.userAnswers.answers->select(an | an.question = it and an.answer <> null and an.answer.size() > 0)->size()")
                 .build();
 
-        var ifStringQuestion = formBuilderHelper.newFormElementIf()
-                .name("If It Is String Question")
-                .predicateExpression("aql: it.type.oclIsKindOf(questionnaire::StringType)")
+        var ifNotEnumQuestion = formBuilderHelper.newFormElementIf()
+                .name("If It Is Not Enumeration Question")
+                .predicateExpression("aql: not it.type.oclIsKindOf(questionnaire::EnumerationType)")
                 .build();
 
-        var stringQuestionStats = formBuilderHelper.newListDescription()
+        var notEnumQuestionStats = formBuilderHelper.newListDescription()
                 .labelExpression("Answers")
                 .valueExpression("aql: self.userAnswers.answers->select(an | an.question = it and an.answer <> null and an.answer.size() > 0)")
                 .displayExpression("aql: candidate.answer")
                 .isEnabledExpression("aql:false")
                 .build();
 
-        answerDisplayContainer.getChildren().addAll(List.of(nbAnswerLabel, ifStringQuestion));
-        ifStringQuestion.getChildren().add(stringQuestionStats);
+        var ifEnumerationQuestion = formBuilderHelper.newFormElementIf()
+                .name("If It Is Enumeration Question")
+                .predicateExpression("aql: it.type.oclIsKindOf(questionnaire::EnumerationType)")
+                .build();
+
+        var enumQuestionStats = formBuilderHelper.newPieChartDescription()
+                .name("Enumeration Pie Chart Description")
+                .labelExpression("Answers")
+                .keysExpression("aql: it.type.getKeys()")
+                .valuesExpression("aql: it.type.getValues(self)")
+                .style(formBuilderHelper.newPieChartDescriptionStyle()
+                        .colors("aql: Sequence{ '#1abc9c', '#16a085', '#2ecc71', '#27ae60', '#3498db', '#2980b9', '#9b59b6', '#8e44ad', '#34495e', '#2c3e50', '#f1c40f', '#f39c12', '#e67e22', '#d35400', '#e74c3c', '#c0392b', '#ecf0f1', '#bdc3c7', '#95a5a6', '#7f8c8d' }")
+                        .build())
+                .build();
+
+        answerDisplayContainer.getChildren().addAll(List.of(nbAnswerLabel, ifNotEnumQuestion, ifEnumerationQuestion));
+        ifNotEnumQuestion.getChildren().add(notEnumQuestionStats);
+        ifEnumerationQuestion.getChildren().add(enumQuestionStats);
 
         pageDescription.getGroups().add(renderGroupDescription);
         renderGroupDescription.getChildren().add(forQuestions);

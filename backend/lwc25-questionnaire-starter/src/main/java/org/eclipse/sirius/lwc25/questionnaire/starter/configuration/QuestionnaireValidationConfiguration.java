@@ -6,8 +6,8 @@ import org.eclipse.sirius.answer.AnswerPackage;
 import org.eclipse.sirius.lwc25.questionnaire.starter.services.ValidationService;
 import org.eclipse.sirius.questionnaire.QuestionnairePackage;
 import org.springframework.context.annotation.Configuration;
-import validation.QuestionnaireValidator;
-import validation.UserAnswerValidator;
+import org.eclipse.sirius.lwc25.questionnaire.starter.validation.QuestionnaireValidator;
+import org.eclipse.sirius.lwc25.questionnaire.starter.validation.UserAnswerValidator;
 
 @Configuration
 public class QuestionnaireValidationConfiguration {

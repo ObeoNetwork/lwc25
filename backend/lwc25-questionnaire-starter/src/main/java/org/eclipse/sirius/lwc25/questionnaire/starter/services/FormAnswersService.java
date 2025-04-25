@@ -1,5 +1,6 @@
 package org.eclipse.sirius.lwc25.questionnaire.starter.services;
 
+import com.google.common.collect.Streams;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.answer.Answer;
 import org.eclipse.sirius.answer.AnswerFactory;
@@ -13,14 +14,14 @@ import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import org.eclipse.sirius.ecore.extender.business.internal.accessor.ecore.EcoreIntrinsicExtender;
-import org.eclipse.sirius.questionnaire.ConditionalGroup;
-import org.eclipse.sirius.questionnaire.Question;
-import org.eclipse.sirius.questionnaire.QuestionReuse;
-import org.eclipse.sirius.questionnaire.QuestionnaireElement;
+import org.eclipse.sirius.questionnaire.*;
 import reactor.core.publisher.Sinks;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class FormAnswersService {
 
@@ -63,6 +64,24 @@ public class FormAnswersService {
                 generateEmptyAnswers(group.getElements(), answers);
             }
         }
+    }
+
+    public List<String> getKeys(EnumerationType enumeration) {
+        return enumeration.getEnumerationliteral().stream().map(EnumerationLiteral::getName).sorted().toList();
+    }
+
+    public List<Long> getValues(EnumerationType enumeration, FormAnswers answers) {
+        return List.copyOf(Streams.stream(answers.eAllContents())
+                .filter(Answer.class::isInstance)
+                .map(Answer.class::cast)
+                .filter(answer -> answer.getQuestion().getType() == enumeration && answer.getAnswer() != null)
+                .collect(Collectors.groupingBy(Answer::getAnswer, Collectors.counting()))
+                .entrySet())
+                .stream()
+                .sorted(Map.Entry.comparingByKey())
+                .map(Map.Entry::getValue)
+//                .map(lon -> Long.)
+                .toList();
     }
 
 }

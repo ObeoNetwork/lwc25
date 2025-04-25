@@ -1,4 +1,4 @@
-package validation;
+package org.eclipse.sirius.lwc25.questionnaire.starter.validation;
 
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.ecore.EClass;

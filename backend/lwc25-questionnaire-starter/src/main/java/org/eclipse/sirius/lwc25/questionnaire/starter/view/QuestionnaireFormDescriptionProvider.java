@@ -21,7 +21,7 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
         var formDescription = formBuilderHelper.newFormDescription()
-                .name("Form Form Description")
+                .name("Questionnaire Form Description")
                 .domainType("questionnaire::Form")
                 .titleExpression("aql:self.name + ' form'")
                 .build();
