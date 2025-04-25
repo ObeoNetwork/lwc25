@@ -49,12 +49,12 @@ public interface IntegerType extends Type {
 	 * --> <!-- end-user-doc -->
 	 *
 	 * @return the value of the '<em>Max</em>' attribute.
-	 * @see #setMax(int)
+	 * @see #setMax(Integer)
 	 * @see org.eclipse.sirius.questionnaire.QuestionnairePackage#getIntegerType_Max()
 	 * @model
 	 * @generated
 	 */
-	int getMax();
+	Integer getMax();
 
 	/**
 	 * Sets the value of the
@@ -65,6 +65,6 @@ public interface IntegerType extends Type {
 	 * @see #getMax()
 	 * @generated
 	 */
-	void setMax(int value);
+	void setMax(Integer value);
 
 } // IntegerType

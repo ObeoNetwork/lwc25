@@ -6,10 +6,12 @@ import org.eclipse.sirius.answer.Answer;
 import org.eclipse.sirius.ecore.extender.business.internal.accessor.ecore.EcoreIntrinsicExtender;
 import org.eclipse.sirius.lwc25.questionnaire.starter.helper.Utils;
 import org.eclipse.sirius.questionnaire.ConditionalGroup;
+import org.eclipse.sirius.questionnaire.IntegerType;
 import org.eclipse.sirius.questionnaire.Question;
 import org.eclipse.sirius.questionnaire.QuestionnaireElement;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class FormService {
@@ -49,5 +51,9 @@ public class FormService {
         }
         return validator.validateAqlExpression(element, expression, feature, expectedType)
                 .stream().reduce((diag1, diag2) -> { diag1.getChildren().add(diag2); return diag1; }).orElse(null);
+    }
+
+    public Diagnostic validateIntType(IntegerType type) {
+        return validator.validateIntType(type).orElse(null);
     }
 }

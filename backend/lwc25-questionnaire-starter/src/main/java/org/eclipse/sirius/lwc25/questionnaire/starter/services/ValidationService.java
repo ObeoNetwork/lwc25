@@ -32,6 +32,12 @@ public class ValidationService {
                 });
     }
 
+    public Optional<Diagnostic> validateIntType(IntegerType type) {
+        if(Optional.ofNullable(type.getMin()).orElse(Integer.MIN_VALUE) >= Optional.ofNullable(type.getMax()).orElse(Integer.MAX_VALUE))
+            return Optional.of(newDiagnostic("The min bound must be lower than the max bound.", type, "min"));
+        return Optional.empty();
+    }
+
     public Optional<Diagnostic> validateQuestionName(Question question) {
         var scopedQuestions = Utils.getScopedVariables(question);
         // Name format

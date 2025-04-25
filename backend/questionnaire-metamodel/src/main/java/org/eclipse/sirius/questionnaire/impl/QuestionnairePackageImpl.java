@@ -623,7 +623,7 @@ public class QuestionnairePackageImpl extends EPackageImpl implements Questionna
 				IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getIntegerType_Min(), ecorePackage.getEIntegerObject(), "min", null, 0, 1, IntegerType.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getIntegerType_Max(), ecorePackage.getEInt(), "max", null, 0, 1, IntegerType.class,
+		initEAttribute(getIntegerType_Max(), ecorePackage.getEIntegerObject(), "max", null, 0, 1, IntegerType.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(decimalTypeEClass, DecimalType.class, "DecimalType", !IS_ABSTRACT, !IS_INTERFACE,

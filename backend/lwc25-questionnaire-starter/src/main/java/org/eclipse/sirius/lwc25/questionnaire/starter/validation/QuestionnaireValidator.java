@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.sirius.answer.Answer;
 import org.eclipse.sirius.lwc25.questionnaire.starter.services.ValidationService;
 import org.eclipse.sirius.questionnaire.ConditionalGroup;
+import org.eclipse.sirius.questionnaire.IntegerType;
 import org.eclipse.sirius.questionnaire.Question;
 
 import java.util.Map;
@@ -32,6 +33,8 @@ public class QuestionnaireValidator implements EValidator {
             isValid = this.validateQuestion(question, diagnostics);
         } else if(eObject instanceof ConditionalGroup group) {
             isValid = this.validateConditionalGroup(group, diagnostics);
+        } else if(eObject instanceof IntegerType type) {
+            isValid = this.validateIntType(type, diagnostics);
         }
         return isValid;
     }
@@ -53,5 +56,11 @@ public class QuestionnaireValidator implements EValidator {
         var aqlResult = validator.validateAqlExpression(group, group.getCondition(), "condition", Boolean.class.getSimpleName());
         aqlResult.forEach(diagnostics::add);
         return aqlResult.isEmpty();
+    }
+
+    public boolean validateIntType(IntegerType type, DiagnosticChain diagnostics) {
+        var result = validator.validateIntType(type);
+        result.ifPresent(diagnostics::add);
+        return result.isEmpty();
     }
 }

@@ -19,7 +19,18 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
-import org.eclipse.sirius.questionnaire.provider.spec.*;
+import org.eclipse.sirius.questionnaire.provider.spec.BooleanTypeItemProviderSpec;
+import org.eclipse.sirius.questionnaire.provider.spec.ConditionalGroupItemProviderSpec;
+import org.eclipse.sirius.questionnaire.provider.spec.DateTypeItemProviderSpec;
+import org.eclipse.sirius.questionnaire.provider.spec.DecimalTypeItemProviderSpec;
+import org.eclipse.sirius.questionnaire.provider.spec.EnumerationLiteralItemProviderSpec;
+import org.eclipse.sirius.questionnaire.provider.spec.EnumerationTypeItemProviderSpec;
+import org.eclipse.sirius.questionnaire.provider.spec.FormItemProviderSpec;
+import org.eclipse.sirius.questionnaire.provider.spec.IntegerTypeItemProviderSpec;
+import org.eclipse.sirius.questionnaire.provider.spec.MoneyTypeItemProviderSpec;
+import org.eclipse.sirius.questionnaire.provider.spec.QuestionItemProviderSpec;
+import org.eclipse.sirius.questionnaire.provider.spec.QuestionReuseItemProviderSpec;
+import org.eclipse.sirius.questionnaire.provider.spec.StringTypeItemProviderSpec;
 import org.eclipse.sirius.questionnaire.util.QuestionnaireAdapterFactory;
 
 /**

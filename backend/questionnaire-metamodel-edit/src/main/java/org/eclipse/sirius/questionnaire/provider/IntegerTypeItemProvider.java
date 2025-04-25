@@ -86,7 +86,7 @@ public class IntegerTypeItemProvider extends ItemProviderAdapter implements IEdi
 						getString("_UI_PropertyDescriptor_description", "_UI_IntegerType_max_feature",
 								"_UI_IntegerType_type"),
 						QuestionnairePackage.Literals.INTEGER_TYPE__MAX, true, false, false,
-						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**

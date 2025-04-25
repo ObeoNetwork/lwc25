@@ -53,7 +53,7 @@ public class IntegerTypeImpl extends MinimalEObjectImpl.Container implements Int
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int MAX_EDEFAULT = 0;
+	protected static final Integer MAX_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getMax() <em>Max</em>}' attribute. <!--
@@ -63,7 +63,7 @@ public class IntegerTypeImpl extends MinimalEObjectImpl.Container implements Int
 	 * @generated
 	 * @ordered
 	 */
-	protected int max = MAX_EDEFAULT;
+	protected Integer max = MAX_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -114,7 +114,7 @@ public class IntegerTypeImpl extends MinimalEObjectImpl.Container implements Int
 	 * @generated
 	 */
 	@Override
-	public int getMax() {
+	public Integer getMax() {
 		return max;
 	}
 
@@ -124,8 +124,8 @@ public class IntegerTypeImpl extends MinimalEObjectImpl.Container implements Int
 	 * @generated
 	 */
 	@Override
-	public void setMax(int newMax) {
-		int oldMax = max;
+	public void setMax(Integer newMax) {
+		Integer oldMax = max;
 		max = newMax;
 		if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET, QuestionnairePackage.INTEGER_TYPE__MAX, oldMax, max));
@@ -195,7 +195,7 @@ public class IntegerTypeImpl extends MinimalEObjectImpl.Container implements Int
 		case QuestionnairePackage.INTEGER_TYPE__MIN:
 			return MIN_EDEFAULT == null ? min != null : !MIN_EDEFAULT.equals(min);
 		case QuestionnairePackage.INTEGER_TYPE__MAX:
-			return max != MAX_EDEFAULT;
+			return MAX_EDEFAULT == null ? max != null : !MAX_EDEFAULT.equals(max);
 		}
 		return super.eIsSet(featureID);
 	}
