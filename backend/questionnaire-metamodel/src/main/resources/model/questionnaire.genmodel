@@ -26,6 +26,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute questionnaire.ecore#//Question/label"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference questionnaire.ecore#//Question/type"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute questionnaire.ecore#//Question/computedExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute questionnaire.ecore#//Question/required"/>
     </genClasses>
     <genClasses image="false" ecoreClass="questionnaire.ecore#//Type"/>
     <genClasses ecoreClass="questionnaire.ecore#//BooleanType"/>

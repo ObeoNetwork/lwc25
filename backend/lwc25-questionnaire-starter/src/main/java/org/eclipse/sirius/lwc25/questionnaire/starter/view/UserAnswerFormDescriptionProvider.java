@@ -11,14 +11,15 @@ import java.util.List;
 
 public class UserAnswerFormDescriptionProvider implements IRepresentationDescriptionProvider {
 
+    public static String LABEL = "User Answer Form Description";
+
     private final FormBuilders formBuilderHelper = new FormBuilders();
-    private final ViewBuilders viewBuilderHelper = new ViewBuilders();
     private final ViewUtils viewUtils = new ViewUtils();
 
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
         var formDescription = formBuilderHelper.newFormDescription()
-                .name("User Answer Form Description")
+                .name(LABEL)
                 .domainType("answer::UserAnswers")
                 .titleExpression("aql:self.name + ' answer form'")
                 .build();
@@ -207,7 +208,7 @@ public class UserAnswerFormDescriptionProvider implements IRepresentationDescrip
     private FormElementDescription getConditionalQuestionDescription() {
         var ifValidGroup =  formBuilderHelper.newFormElementIf()
                 .name("If The Condition Of The Group Is Valid")
-                .predicateExpression("aql: it.isValid(self)")
+                .predicateExpression("aql: it.mustBeHidden(self)")
                 .build();
 
         var forQuestionsDescription = formBuilderHelper.newFormElementFor()

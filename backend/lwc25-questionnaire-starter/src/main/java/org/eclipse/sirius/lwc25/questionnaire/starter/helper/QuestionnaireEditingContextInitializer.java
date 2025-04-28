@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.lwc25.questionnaire.starter.view.*;
+import org.eclipse.sirius.qlstyle.QLStylePackage;
 import org.eclipse.sirius.questionnaire.QuestionnairePackage;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
@@ -70,10 +71,12 @@ public class QuestionnaireEditingContextInitializer implements IEditingContextPr
             var packageRegistry = emfEditingContext.getDomain().getResourceSet().getPackageRegistry();
             packageRegistry.put(QuestionnairePackage.eNS_URI, QuestionnairePackage.eINSTANCE);
             packageRegistry.put(AnswerPackage.eNS_URI, AnswerPackage.eINSTANCE);
+            packageRegistry.put(QLStylePackage.eNS_URI, QLStylePackage.eINSTANCE);
 
             emfEditingContext.getViews().add(getView("QuestionnaireView", QuestionnaireFormDescriptionProvider::new));
             emfEditingContext.getViews().add(getView("UserAnswerView", UserAnswerFormDescriptionProvider::new));
             emfEditingContext.getViews().add(getView("FormAnswerView", FormAnswerDescriptionProvider::new));
+//            emfEditingContext.getViews().add(getView("FormAnswerView", FormAnswerDescriptionProvider::new));
         }
     }
 

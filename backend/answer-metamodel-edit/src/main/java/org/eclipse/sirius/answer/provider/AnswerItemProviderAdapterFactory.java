@@ -19,10 +19,8 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
-import org.eclipse.sirius.answer.provider.spec.AnswerItemProviderSpec;
-import org.eclipse.sirius.answer.provider.spec.FormAnswersItemProviderSpec;
-import org.eclipse.sirius.answer.provider.spec.UserAnswersItemProviderSpec;
 import org.eclipse.sirius.answer.util.AnswerAdapterFactory;
+import org.eclipse.sirius.answer.provider.spec.*;
 
 /**
  * This is the factory that is used to provide the interfaces needed to support
@@ -88,7 +86,7 @@ public class AnswerItemProviderAdapterFactory extends AnswerAdapterFactory
 	 * This creates an adapter for a {@link org.eclipse.sirius.answer.Answer}. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 *
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Adapter createAnswerAdapter() {
@@ -112,7 +110,7 @@ public class AnswerItemProviderAdapterFactory extends AnswerAdapterFactory
 	 * This creates an adapter for a {@link org.eclipse.sirius.answer.UserAnswers}.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 *
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Adapter createUserAnswersAdapter() {
@@ -136,7 +134,7 @@ public class AnswerItemProviderAdapterFactory extends AnswerAdapterFactory
 	 * This creates an adapter for a {@link org.eclipse.sirius.answer.FormAnswers}.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 *
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Adapter createFormAnswersAdapter() {

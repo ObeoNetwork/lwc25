@@ -2,13 +2,13 @@
  */
 package org.eclipse.sirius.answer.provider;
 
-import org.eclipse.emf.common.EMFPlugin;
-import org.eclipse.emf.common.util.ResourceLocator;
-import org.eclipse.sirius.questionnaire.provider.QuestionnaireEditPlugin;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+
+import org.eclipse.emf.common.EMFPlugin;
+import org.eclipse.emf.common.util.ResourceLocator;
+import org.eclipse.sirius.questionnaire.provider.QuestionnaireEditPlugin;
 
 /**
  * This is the central singleton for the Answer edit plugin. <!-- begin-user-doc
@@ -53,7 +53,7 @@ public final class AnswerEditPlugin extends EMFPlugin {
 	}
 
 	@Override
-	public Object doGetImage(String key) throws IOException  {
+	public Object doGetImage(String key) throws IOException {
 		URL url = new URL(this.getBaseURL() + "icons/" + key + this.getExtensionFor(key));
 		InputStream inputStream = url.openStream();
 		inputStream.close();
@@ -65,8 +65,11 @@ public final class AnswerEditPlugin extends EMFPlugin {
 		int index = key.lastIndexOf('.');
 		if (index != -1) {
 			String extension = key.substring(index + 1);
-			if ("png".equalsIgnoreCase(extension) || "gif".equalsIgnoreCase(extension) || "bmp".equalsIgnoreCase(extension) || "ico".equalsIgnoreCase(extension) || "jpg".equalsIgnoreCase(extension)
-					|| "jpeg".equalsIgnoreCase(extension) || "tif".equalsIgnoreCase(extension) || "tiff".equalsIgnoreCase(extension) || "svg".equalsIgnoreCase(extension)) {
+			if ("png".equalsIgnoreCase(extension) || "gif".equalsIgnoreCase(extension)
+					|| "bmp".equalsIgnoreCase(extension) || "ico".equalsIgnoreCase(extension)
+					|| "jpg".equalsIgnoreCase(extension) || "jpeg".equalsIgnoreCase(extension)
+					|| "tif".equalsIgnoreCase(extension) || "tiff".equalsIgnoreCase(extension)
+					|| "svg".equalsIgnoreCase(extension)) {
 				result = "";
 			}
 		}

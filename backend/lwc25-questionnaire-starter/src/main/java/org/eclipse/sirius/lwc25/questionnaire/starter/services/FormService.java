@@ -2,16 +2,13 @@ package org.eclipse.sirius.lwc25.questionnaire.starter.services;
 
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.sirius.answer.Answer;
 import org.eclipse.sirius.ecore.extender.business.internal.accessor.ecore.EcoreIntrinsicExtender;
-import org.eclipse.sirius.lwc25.questionnaire.starter.helper.Utils;
+import org.eclipse.sirius.lwc25.questionnaire.starter.helper.QuestionnaireUtils;
 import org.eclipse.sirius.questionnaire.ConditionalGroup;
 import org.eclipse.sirius.questionnaire.IntegerType;
 import org.eclipse.sirius.questionnaire.Question;
 import org.eclipse.sirius.questionnaire.QuestionnaireElement;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class FormService {
@@ -34,7 +31,7 @@ public class FormService {
     }
 
     public String getScopedVariablesAsString(QuestionnaireElement element) {
-        return Utils.getScopedVariables(element).stream().map(Question::getName).collect(Collectors.joining(", "));
+        return QuestionnaireUtils.getScopedVariables(element).stream().map(Question::getName).collect(Collectors.joining(", "));
     }
 
     public Diagnostic validateAqlExpression(QuestionnaireElement element) {

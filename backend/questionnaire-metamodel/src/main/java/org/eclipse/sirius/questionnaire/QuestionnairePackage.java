@@ -263,13 +263,22 @@ public interface QuestionnairePackage extends EPackage {
 	int QUESTION__COMPUTED_EXPRESSION = QUESTIONNAIRE_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Required</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 * @ordered
+	 */
+	int QUESTION__REQUIRED = QUESTIONNAIRE_ELEMENT_FEATURE_COUNT + 4;
+
+	/**
 	 * The number of structural features of the '<em>Question</em>' class. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 *
 	 * @generated
 	 * @ordered
 	 */
-	int QUESTION_FEATURE_COUNT = QUESTIONNAIRE_ELEMENT_FEATURE_COUNT + 4;
+	int QUESTION_FEATURE_COUNT = QUESTIONNAIRE_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Question</em>' class. <!--
@@ -735,6 +744,18 @@ public interface QuestionnairePackage extends EPackage {
 	EAttribute getQuestion_ComputedExpression();
 
 	/**
+	 * Returns the meta object for the attribute
+	 * '{@link org.eclipse.sirius.questionnaire.Question#isRequired
+	 * <em>Required</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @return the meta object for the attribute '<em>Required</em>'.
+	 * @see org.eclipse.sirius.questionnaire.Question#isRequired()
+	 * @see #getQuestion()
+	 * @generated
+	 */
+	EAttribute getQuestion_Required();
+
+	/**
 	 * Returns the meta object for class
 	 * '{@link org.eclipse.sirius.questionnaire.Type <em>Type</em>}'. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -1031,6 +1052,14 @@ public interface QuestionnairePackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute QUESTION__COMPUTED_EXPRESSION = eINSTANCE.getQuestion_ComputedExpression();
+
+		/**
+		 * The meta object literal for the '<em><b>Required</b></em>' attribute feature.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 *
+		 * @generated
+		 */
+		EAttribute QUESTION__REQUIRED = eINSTANCE.getQuestion_Required();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.sirius.questionnaire.Type

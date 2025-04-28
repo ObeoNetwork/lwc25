@@ -7,7 +7,7 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.answer.Answer;
 import org.eclipse.sirius.answer.AnswerPackage;
-import org.eclipse.sirius.lwc25.questionnaire.starter.helper.Utils;
+import org.eclipse.sirius.lwc25.questionnaire.starter.helper.QuestionnaireUtils;
 import org.eclipse.sirius.questionnaire.*;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +39,7 @@ public class ValidationService {
     }
 
     public Optional<Diagnostic> validateQuestionName(Question question) {
-        var scopedQuestions = Utils.getScopedVariables(question);
+        var scopedQuestions = QuestionnaireUtils.getScopedVariables(question);
         // Name format
         if (question.getName() == null || !question.getName().matches("[a-zA-Z0-9\\-_]+")) {
             return Optional.of(newDiagnostic("Invalid name. The name should match '[a-zA-Z0-9-_]+'.", question, "name"));
@@ -54,7 +54,7 @@ public class ValidationService {
     public List<Diagnostic> validateAqlExpression(QuestionnaireElement element, String expression, String feature, @Nullable String expectedType) {
         var aqlValidator = new AQLValidator(List.of(new UserAnswersService(this)), List.of(AnswerPackage.eINSTANCE, QuestionnairePackage.eINSTANCE));
         var diagnostics = new LinkedList<Diagnostic>();
-        var scopedQuestions = Utils.getScopedVariables(element);
+        var scopedQuestions = QuestionnaireUtils.getScopedVariables(element);
 
         // Computed expression format
         var resultOpt = aqlValidator.validate(expression, scopedQuestions);

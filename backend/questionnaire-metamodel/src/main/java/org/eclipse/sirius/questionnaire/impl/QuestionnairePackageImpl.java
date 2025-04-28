@@ -311,6 +311,16 @@ public class QuestionnairePackageImpl extends EPackageImpl implements Questionna
 	 * @generated
 	 */
 	@Override
+	public EAttribute getQuestion_Required() {
+		return (EAttribute) questionEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 */
+	@Override
 	public EClass getType() {
 		return typeEClass;
 	}
@@ -509,6 +519,7 @@ public class QuestionnairePackageImpl extends EPackageImpl implements Questionna
 		createEAttribute(questionEClass, QUESTION__LABEL);
 		createEReference(questionEClass, QUESTION__TYPE);
 		createEAttribute(questionEClass, QUESTION__COMPUTED_EXPRESSION);
+		createEAttribute(questionEClass, QUESTION__REQUIRED);
 
 		typeEClass = createEClass(TYPE);
 
@@ -610,6 +621,8 @@ public class QuestionnairePackageImpl extends EPackageImpl implements Questionna
 		initEAttribute(getQuestion_ComputedExpression(), ecorePackage.getEString(), "computedExpression", null, 0, 1,
 				Question.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
 				!IS_DERIVED, IS_ORDERED);
+		initEAttribute(getQuestion_Required(), ecorePackage.getEBoolean(), "required", null, 0, 1, Question.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(typeEClass, Type.class, "Type", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

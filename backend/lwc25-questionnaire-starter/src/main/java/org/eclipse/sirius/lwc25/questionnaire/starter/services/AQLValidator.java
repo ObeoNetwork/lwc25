@@ -45,6 +45,7 @@ public class AQLValidator {
         }
         var types = questionVariables.stream()
                 .collect(Collectors.toMap(NamedElement::getName, question -> Set.of(this.questionToIType(question.getType()))));
+        types.put("undefined", Set.of(new ClassType(this.queryEnvironment, Object.class)));
         return Optional.of(QueryValidation.newEngine(this.queryEnvironment).validate(expression, types));
     }
 

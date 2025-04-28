@@ -1,6 +1,5 @@
 package org.eclipse.sirius.lwc25.questionnaire.starter.helper;
 
-import com.google.common.collect.Streams;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.questionnaire.ConditionalGroup;
@@ -10,7 +9,7 @@ import org.eclipse.sirius.questionnaire.QuestionReuse;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Utils {
+public class QuestionnaireUtils {
 
     public static List<Question> getScopedVariables(EObject obj) {
         var iterator = EcoreUtil.getRootContainer(obj).eAllContents();
