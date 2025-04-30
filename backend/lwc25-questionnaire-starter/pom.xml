@@ -71,13 +71,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>lwc25-questionnaire-metamodel</artifactId>
+			<artifactId>lwc25-qlstyle-metamodel</artifactId>
 			<version>0.0.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>lwc25-questionnaire-metamodel-edit</artifactId>
+			<artifactId>lwc25-qlstyle-metamodel-edit</artifactId>
 			<version>0.0.1</version>
 			<scope>compile</scope>
 		</dependency>

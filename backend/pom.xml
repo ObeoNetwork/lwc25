@@ -36,6 +36,8 @@
 		<module>questionnaire-metamodel-edit</module>
 		<module>answer-metamodel</module>
 		<module>answer-metamodel-edit</module>
+		<module>qlstyle-metamodel</module>
+		<module>qlstyle-metamodel-edit</module>
 		<module>lwc25-questionnaire-starter</module>
 	</modules>
 </project>

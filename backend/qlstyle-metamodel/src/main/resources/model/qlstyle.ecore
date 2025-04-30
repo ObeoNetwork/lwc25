@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="qlstyle" nsURI="http://www.example.org/qlstyle" nsPrefix="qlstyle">
+  <eClassifiers xsi:type="ecore:EClass" name="QLStyle">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="form" lowerBound="1" eType="ecore:EClass ../../../../../lwc25-questionnaire-metamodel/src/main/resources/model/questionnaire.ecore#//Form"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+        eType="#//QLStyleElement" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="QuestionCustomization" eSuperTypes="#//QLStyleElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="helpText" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="widget" lowerBound="1"
+        eType="#//Widget"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="question" lowerBound="1"
+        eType="ecore:EClass ../../../../../lwc25-questionnaire-metamodel/src/main/resources/model/questionnaire.ecore#//QuestionnaireElement"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Widget">
+    <eLiterals name="Textfield"/>
+    <eLiterals name="Checkbox" value="1"/>
+    <eLiterals name="Select" value="2"/>
+    <eLiterals name="Slider" value="3"/>
+    <eLiterals name="Radio" value="4"/>
+    <eLiterals name="Date" value="5"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Group" eSuperTypes="#//QLStyleElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="layout" eType="#//GroupLayout"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+        eType="#//QLStyleElement"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="GroupLayout">
+    <eLiterals name="Vertical"/>
+    <eLiterals name="Horizontal" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="QLStyleElement" abstract="true" interface="true"/>
+</ecore:EPackage>

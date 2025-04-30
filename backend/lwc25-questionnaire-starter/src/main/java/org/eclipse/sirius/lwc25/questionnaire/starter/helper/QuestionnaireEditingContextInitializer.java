@@ -39,6 +39,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.service
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -49,10 +50,12 @@ public class QuestionnaireEditingContextInitializer implements IEditingContextPr
     private final IProjectSearchService projectSearchService;
 
     private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
+    private final List<IFormAnswerGenerator> generators;
 
-    public QuestionnaireEditingContextInitializer(IProjectSearchService projectSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
+    public QuestionnaireEditingContextInitializer(IProjectSearchService projectSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService, List<IFormAnswerGenerator> generators) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
         this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
+        this.generators = generators;
     }
 
     @Override
@@ -74,9 +77,9 @@ public class QuestionnaireEditingContextInitializer implements IEditingContextPr
             packageRegistry.put(QLStylePackage.eNS_URI, QLStylePackage.eINSTANCE);
 
             emfEditingContext.getViews().add(getView("QuestionnaireView", QuestionnaireFormDescriptionProvider::new));
-            emfEditingContext.getViews().add(getView("UserAnswerView", UserAnswerFormDescriptionProvider::new));
+            emfEditingContext.getViews().add(getView("UserAnswerView", () -> new UserAnswerFormDescriptionProvider(generators)));
             emfEditingContext.getViews().add(getView("FormAnswerView", FormAnswerDescriptionProvider::new));
-//            emfEditingContext.getViews().add(getView("FormAnswerView", FormAnswerDescriptionProvider::new));
+            emfEditingContext.getViews().add(getView("QLStyleView", QLStyleFormDescriptionProvider::new));
         }
     }
 

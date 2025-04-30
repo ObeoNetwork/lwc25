@@ -28,6 +28,8 @@ import org.eclipse.sirius.questionnaire.Type;
  * <em>Type</em>}</li>
  * <li>{@link org.eclipse.sirius.questionnaire.impl.QuestionImpl#getComputedExpression
  * <em>Computed Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.questionnaire.impl.QuestionImpl#isRequired
+ * <em>Required</em>}</li>
  * </ul>
  *
  * @generated
@@ -102,6 +104,26 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 	 * @ordered
 	 */
 	protected String computedExpression = COMPUTED_EXPRESSION_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isRequired() <em>Required</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @see #isRequired()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean REQUIRED_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isRequired() <em>Required</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @see #isRequired()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean required = REQUIRED_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -259,6 +281,31 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 	 * @generated
 	 */
 	@Override
+	public boolean isRequired() {
+		return required;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 */
+	@Override
+	public void setRequired(boolean newRequired) {
+		boolean oldRequired = required;
+		required = newRequired;
+		if (eNotificationRequired()) {
+			eNotify(new ENotificationImpl(this, Notification.SET, QuestionnairePackage.QUESTION__REQUIRED, oldRequired,
+					required));
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 		case QuestionnairePackage.QUESTION__TYPE:
@@ -283,6 +330,8 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 			return getType();
 		case QuestionnairePackage.QUESTION__COMPUTED_EXPRESSION:
 			return getComputedExpression();
+		case QuestionnairePackage.QUESTION__REQUIRED:
+			return isRequired();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -306,6 +355,9 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 			return;
 		case QuestionnairePackage.QUESTION__COMPUTED_EXPRESSION:
 			setComputedExpression((String) newValue);
+			return;
+		case QuestionnairePackage.QUESTION__REQUIRED:
+			setRequired((Boolean) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -331,6 +383,9 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 		case QuestionnairePackage.QUESTION__COMPUTED_EXPRESSION:
 			setComputedExpression(COMPUTED_EXPRESSION_EDEFAULT);
 			return;
+		case QuestionnairePackage.QUESTION__REQUIRED:
+			setRequired(REQUIRED_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -352,6 +407,8 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 		case QuestionnairePackage.QUESTION__COMPUTED_EXPRESSION:
 			return COMPUTED_EXPRESSION_EDEFAULT == null ? computedExpression != null
 					: !COMPUTED_EXPRESSION_EDEFAULT.equals(computedExpression);
+		case QuestionnairePackage.QUESTION__REQUIRED:
+			return required != REQUIRED_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -410,6 +467,8 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 		result.append(label);
 		result.append(", computedExpression: ");
 		result.append(computedExpression);
+		result.append(", required: ");
+		result.append(required);
 		result.append(')');
 		return result.toString();
 	}

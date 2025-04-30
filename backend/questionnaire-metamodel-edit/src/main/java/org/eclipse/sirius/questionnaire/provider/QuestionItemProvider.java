@@ -56,6 +56,7 @@ public class QuestionItemProvider extends ItemProviderAdapter implements IEditin
 			addNamePropertyDescriptor(object);
 			addLabelPropertyDescriptor(object);
 			addComputedExpressionPropertyDescriptor(object);
+			addRequiredPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -106,6 +107,22 @@ public class QuestionItemProvider extends ItemProviderAdapter implements IEditin
 								"_UI_Question_type"),
 						QuestionnairePackage.Literals.QUESTION__COMPUTED_EXPRESSION, true, false, false,
 						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Required feature. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 */
+	protected void addRequiredPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Question_required_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Question_required_feature",
+								"_UI_Question_type"),
+						QuestionnairePackage.Literals.QUESTION__REQUIRED, true, false, false,
+						ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -178,6 +195,7 @@ public class QuestionItemProvider extends ItemProviderAdapter implements IEditin
 		case QuestionnairePackage.QUESTION__NAME:
 		case QuestionnairePackage.QUESTION__LABEL:
 		case QuestionnairePackage.QUESTION__COMPUTED_EXPRESSION:
+		case QuestionnairePackage.QUESTION__REQUIRED:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
 		case QuestionnairePackage.QUESTION__TYPE:

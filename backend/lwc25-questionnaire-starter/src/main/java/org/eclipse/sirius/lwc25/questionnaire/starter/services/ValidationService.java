@@ -52,7 +52,7 @@ public class ValidationService {
     }
 
     public List<Diagnostic> validateAqlExpression(QuestionnaireElement element, String expression, String feature, @Nullable String expectedType) {
-        var aqlValidator = new AQLValidator(List.of(new UserAnswersService(this)), List.of(AnswerPackage.eINSTANCE, QuestionnairePackage.eINSTANCE));
+        var aqlValidator = new AQLValidator(List.of(new UserAnswersAqlService(this)), List.of(AnswerPackage.eINSTANCE, QuestionnairePackage.eINSTANCE));
         var diagnostics = new LinkedList<Diagnostic>();
         var scopedQuestions = QuestionnaireUtils.getScopedVariables(element);
 

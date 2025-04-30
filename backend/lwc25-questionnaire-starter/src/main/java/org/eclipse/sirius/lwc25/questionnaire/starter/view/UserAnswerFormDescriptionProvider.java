@@ -1,13 +1,18 @@
 package org.eclipse.sirius.lwc25.questionnaire.starter.view;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.builder.generated.form.FormBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
+import org.eclipse.sirius.questionnaire.QuestionnairePackage;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class UserAnswerFormDescriptionProvider implements IRepresentationDescriptionProvider {
 
@@ -15,6 +20,13 @@ public class UserAnswerFormDescriptionProvider implements IRepresentationDescrip
 
     private final FormBuilders formBuilderHelper = new FormBuilders();
     private final ViewUtils viewUtils = new ViewUtils();
+    private final ViewBuilders viewBuilderHelper = new ViewBuilders();
+
+    private final List<IFormAnswerGenerator> generators;
+
+    public UserAnswerFormDescriptionProvider(List<IFormAnswerGenerator> generators) {
+        this.generators = generators;
+    }
 
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
@@ -31,194 +43,128 @@ public class UserAnswerFormDescriptionProvider implements IRepresentationDescrip
                 .labelExpression("aql:self.name")
                 .build();
 
+        var title = formBuilderHelper.newLabelDescription()
+                .valueExpression("aql: self.eContainer().form.name")
+                .name("Form Title")
+                .style(formBuilderHelper.newLabelDescriptionStyle().fontSize(20).bold(true).build())
+                .build();
+
         var renderGroupDescription = formBuilderHelper.newGroupDescription()
                 .name("Render Group Description")
                 .semanticCandidatesExpression("aql:self")
+                .children(title)
                 .build();
 
-        var forQuestionsDescription = formBuilderHelper.newFormElementFor()
-                .name("For Each Questions")
-                .iterableExpression("aql: self.eContainer().form.elements")
-                .iterator("it")
+        var ifNotLinked = formBuilderHelper.newFormElementIf()
+                .predicateExpression("aql: self.name = null or self.name.size() = 0 or self.answers->isEmpty()")
                 .build();
 
-        var ifIsQuestion = formBuilderHelper.newFormElementIf()
-                .name("If Element Is Question")
-                .predicateExpression("aql: it.oclIsKindOf(questionnaire::Question) and it.computedExpression.size() = 0")
-                .children(getQuestionDescriptions("it").toArray(FormElementDescription[]::new))
+        var formReferenceWidget = formBuilderHelper.newTextfieldDescription()
+                .labelExpression("Your Name")
+                .name("Your name")
+                .valueExpression("aql: self.name")
+                .body(viewUtils.textfieldSetter("self", "name"))
                 .build();
 
-
-        var ifIsConditionalGroup = formBuilderHelper.newFormElementIf()
-                .name("If Element Is Question")
-                .predicateExpression("aql: it.oclIsKindOf(questionnaire::ConditionalGroup)")
-                .children(getConditionalQuestionDescription())
+        var initButton = formBuilderHelper.newButtonDescription()
+                .name("Next Button")
+                .buttonLabelExpression("Next")
+                .isEnabledExpression("aql: self.name <> null and self.name.size() > 0")
+                .body(viewBuilderHelper.newChangeContext().expression("aql: self.init()").build())
                 .build();
 
-        var ifIsReuseQuestion = formBuilderHelper.newFormElementIf()
-                .name("If Element Is Question")
-                .predicateExpression("aql: it.oclIsKindOf(questionnaire::QuestionReuse)")
-                .children(getQuestionDescriptions("it.question").toArray(FormElementDescription[]::new))
+        ifNotLinked.getChildren().add(formReferenceWidget);
+        ifNotLinked.getChildren().add(initButton);
+
+        var ifLinked = formBuilderHelper.newFormElementIf()
+                .predicateExpression("aql: self.name <> null and self.name.size() > 0 and not self.answers->isEmpty()")
                 .build();
 
         formDescription.getPages().add(pageDescription);
         pageDescription.getGroups().add(renderGroupDescription);
-        renderGroupDescription.getChildren().add(forQuestionsDescription);
-        forQuestionsDescription.getChildren().add(ifIsQuestion);
-        forQuestionsDescription.getChildren().add(ifIsConditionalGroup);
-        forQuestionsDescription.getChildren().add(ifIsReuseQuestion);
+        renderGroupDescription.getChildren().add(ifNotLinked);
+        renderGroupDescription.getChildren().add(ifLinked);
+        ifLinked.getChildren().addAll(generateMainLoop());
 
         return formDescription;
     }
 
-    private List<FormElementDescription> getQuestionDescriptions(String currentQuestion) {
+    private List<FormElementDescription> generateMainLoop() {
+        var previousHandleExpressions = new LinkedList<String>();
+        var result = new LinkedList<FormElementDescription>();
+        for(var generator: generators) {
+            var query = "aql: " + previousHandleExpressions.stream().map(expr -> "not (" + expr + ") and ")
+                    .collect(Collectors.joining()) + generator.canHandle();
+            previousHandleExpressions.add(generator.canHandle());
 
+            var ifCanHandleAndNotRendered = formBuilderHelper.newFormElementIf()
+                    .predicateExpression(query)
+                    .build();
+
+            var loop = generator.generateLoop();
+            var questionExpression = generator.getQuestionFromIteratorExpression();
+
+            Supplier<FormElementDescription> questionWithDisplayConditionDesc = () -> {
+                var description = generator.generateDisplayCondition(questionExpression);
+                description.getChildren().addAll(getQuestionDescriptions(questionExpression, generator));
+                return description;
+            };
+
+            var ifAnswerExist = formBuilderHelper.newFormElementIf()
+                    .name("If An Answer Element Exists")
+                    .predicateExpression("aql: it.question.computedExpression.size() > 0 or self.answers->exists(answer | answer.question = it.question)")
+                    .build();
+
+            var ifIsQuestion = formBuilderHelper.newFormElementIf()
+                    .name("If Element Is Question")
+                    .predicateExpression("aql: " + questionExpression + ".oclIsKindOf(questionnaire::Question)")
+                    .children(questionWithDisplayConditionDesc.get())
+                    .build();
+
+            var ifIsReuseQuestion = formBuilderHelper.newFormElementIf()
+                    .name("If Element Is Question Reuse")
+                    .predicateExpression("aql: " + questionExpression + ".oclIsKindOf(questionnaire::QuestionReuse)");
+
+            ifAnswerExist.getChildren().addAll(List.of(ifIsQuestion, ifIsReuseQuestion.children(questionWithDisplayConditionDesc.get()).build()));
+            loop.getChildren().add(ifAnswerExist);
+            ifCanHandleAndNotRendered.getChildren().add(loop);
+            result.add(ifCanHandleAndNotRendered);
+        }
+        return result;
+    }
+
+    private List<FormElementDescription> getQuestionDescriptions(String currentQuestionExpression, IFormAnswerGenerator generator) {
         var ifIsNotComputed = formBuilderHelper.newFormElementIf()
                 .name("If Question Is Not Computed")
-                .predicateExpression("aql: " + currentQuestion + ".computedExpression.size() = 0")
+                .predicateExpression("aql: " + currentQuestionExpression + ".computedExpression.size() = 0")
                 .build();
 
-        var ifThereIsAnAnswer = formBuilderHelper.newFormElementIf()
-                .name("If There Is An Answer For The Question")
-                .predicateExpression("aql: self.answers->exists(answer | answer.question = " + currentQuestion + ")")
-                .build();
-
-        var ifIsString = formBuilderHelper.newFormElementIf()
-                .name("If Element Is String Question")
-                .predicateExpression("aql: " + currentQuestion + ".type.oclIsKindOf(questionnaire::StringType)")
-                .build();
-
-        var stringTextfieldDescription = formBuilderHelper.newTextfieldDescription()
-                .name("String Question")
-                .labelExpression("aql: " + currentQuestion + ".label")
-                .valueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").answer")
-                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestion + ")", "answer"))
-                .build();
-
-        var ifIsBoolean = formBuilderHelper.newFormElementIf()
-                .name("If Element Is Boolean Question")
-                .predicateExpression("aql: " + currentQuestion + ".type.oclIsKindOf(questionnaire::BooleanType)")
-                .build();
-
-        var booleanCheckboxDescription = formBuilderHelper.newCheckboxDescription()
-                .name("Boolean Question")
-                .labelExpression("aql: " + currentQuestion + ".label")
-                .valueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").answer")
-                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestion + ")", "answer"))
-                .build();
-
-        var ifIsInteger = formBuilderHelper.newFormElementIf()
-                .name("If Element Is Integer Question")
-                .predicateExpression("aql: " + currentQuestion + ".type.oclIsKindOf(questionnaire::IntegerType)")
-                .build();
-
-        var integerTextfieldDescription = formBuilderHelper.newTextfieldDescription()
-                .name("Integer Question")
-                .labelExpression("aql: " + currentQuestion + ".label")
-                .valueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").answer")
-                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestion + ")", "answer"))
-                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").validateValue()")
-                .build();
-
-        var ifIsDecimal = formBuilderHelper.newFormElementIf()
-                .name("If Element Is Decimal Question")
-                .predicateExpression("aql: " + currentQuestion + ".type.oclIsKindOf(questionnaire::DecimalType)")
-                .build();
-
-        var decimalTextfieldDescription = formBuilderHelper.newTextfieldDescription()
-                .name("Decimal Question")
-                .labelExpression("aql: " + currentQuestion + ".label")
-                .valueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").answer")
-                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestion + ")", "answer"))
-                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").validateValue()")
-                .build();
-
-        var ifIsDate = formBuilderHelper.newFormElementIf()
-                .name("If Element Is Date Question")
-                .predicateExpression("aql: " + currentQuestion + ".type.oclIsKindOf(questionnaire::DateType)")
-                .build();
-
-        var dateDatePickerDescription = formBuilderHelper.newDateTimeDescription()
-                .name("Date Question")
-                .labelExpression("aql: " + currentQuestion + ".label")
-                .stringValueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").answer")
-                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestion + ")", "answer"))
-                .build();
-
-        var ifIsMoney = formBuilderHelper.newFormElementIf()
-                .name("If Element Is Money Question")
-                .predicateExpression("aql: " + currentQuestion + ".type.oclIsKindOf(questionnaire::MoneyType)")
-                .build();
-
-        var moneyTextfieldDescription = formBuilderHelper.newTextfieldDescription()
-                .name("Money Question")
-                .labelExpression("aql: " + currentQuestion + ".label")
-                .valueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").answer + '€'")
-                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestion + ")", "answer", "aql:newValue.toString().replaceAll('€', '')"))
-                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").validateValue()")
-                .build();
-
-        var ifIsEnumeration = formBuilderHelper.newFormElementIf()
-                .name("If Element Is Enumeration Question")
-                .predicateExpression("aql: " + currentQuestion + ".type.oclIsKindOf(questionnaire::EnumerationType)")
-                .build();
-
-        var enumerationSelectDescription = formBuilderHelper.newSelectDescription()
-                .name("Enumeration Question")
-                .labelExpression("aql: " + currentQuestion + ".label")
-                .valueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").answer")
-                .candidatesExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").question.type.enumerationliteral.name")
-                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestion + ")", "answer"))
-                .candidateLabelExpression("aql: candidate")
-                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + currentQuestion + ").validateValue()")
-                .build();
+        var typeEclass = QuestionnairePackage.eINSTANCE.getType();
+        ifIsNotComputed.getChildren().addAll(QuestionnairePackage.eINSTANCE.getEClassifiers().stream()
+                .filter(EClass.class::isInstance)
+                .map(EClass.class::cast)
+                .filter(typeEclass::isSuperTypeOf)
+                .filter(type -> type != typeEclass)
+                .map(type -> (FormElementDescription) formBuilderHelper.newFormElementIf()
+                        .name("If Element Is " + type.getName() + " Question")
+                        .predicateExpression("aql: " + currentQuestionExpression + ".type.oclIsKindOf(questionnaire::" + type.getName() + ")")
+                        .children(generator.dispatchType(type, "it").toArray(FormElementDescription[]::new))
+                        .build())
+                .toList());
 
         var ifIsComputed = formBuilderHelper.newFormElementIf()
                 .name("If Question Is Computed")
-                .predicateExpression("aql: " + currentQuestion + ".computedExpression.size() > 0")
+                .predicateExpression("aql: " + currentQuestionExpression + ".computedExpression.size() > 0")
                 .build();
 
         var displayComputedQuestion = formBuilderHelper.newLabelDescription()
                 .name("Computed Expression")
-                .labelExpression("aql:" + currentQuestion + ".label")
-                .valueExpression("aql: " + currentQuestion + ".evaluate(self)")
+                .labelExpression("aql:" + currentQuestionExpression + ".label")
+                .valueExpression("aql: " + currentQuestionExpression + ".evaluate(self)")
                 .build();
 
         ifIsComputed.getChildren().add(displayComputedQuestion);
-        ifIsString.getChildren().add(stringTextfieldDescription);
-        ifIsBoolean.getChildren().add(booleanCheckboxDescription);
-        ifIsInteger.getChildren().add(integerTextfieldDescription);
-        ifIsDecimal.getChildren().add(decimalTextfieldDescription);
-        ifIsDate.getChildren().add(dateDatePickerDescription);
-        ifIsMoney.getChildren().add(moneyTextfieldDescription);
-        ifIsEnumeration.getChildren().add(enumerationSelectDescription);
-        ifThereIsAnAnswer.getChildren().add(ifIsString);
-        ifThereIsAnAnswer.getChildren().add(ifIsBoolean);
-        ifThereIsAnAnswer.getChildren().add(ifIsInteger);
-        ifThereIsAnAnswer.getChildren().add(ifIsDecimal);
-        ifThereIsAnAnswer.getChildren().add(ifIsDate);
-        ifThereIsAnAnswer.getChildren().add(ifIsMoney);
-        ifThereIsAnAnswer.getChildren().add(ifIsEnumeration);
-        ifIsNotComputed.getChildren().add(ifThereIsAnAnswer);
 
-        return List.of(ifThereIsAnAnswer, ifIsComputed);
-    }
-
-
-    private FormElementDescription getConditionalQuestionDescription() {
-        var ifValidGroup =  formBuilderHelper.newFormElementIf()
-                .name("If The Condition Of The Group Is Valid")
-                .predicateExpression("aql: it.mustBeHidden(self)")
-                .build();
-
-        var forQuestionsDescription = formBuilderHelper.newFormElementFor()
-                .name("For Each Questions")
-                .iterableExpression("aql: it.elements")
-                .iterator("it2")
-                .children(getQuestionDescriptions("it2").toArray(FormElementDescription[]::new))
-                .build();
-
-        ifValidGroup.getChildren().add(forQuestionsDescription);
-        return ifValidGroup;
+        return List.of(ifIsComputed, ifIsNotComputed);
     }
 }

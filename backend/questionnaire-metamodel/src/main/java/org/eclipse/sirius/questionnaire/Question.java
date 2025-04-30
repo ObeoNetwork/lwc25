@@ -16,6 +16,8 @@ package org.eclipse.sirius.questionnaire;
  * <em>Type</em>}</li>
  * <li>{@link org.eclipse.sirius.questionnaire.Question#getComputedExpression
  * <em>Computed Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.questionnaire.Question#isRequired
+ * <em>Required</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.questionnaire.QuestionnairePackage#getQuestion()
@@ -92,5 +94,28 @@ public interface Question extends QuestionnaireElement, NamedElement {
 	 * @generated
 	 */
 	void setComputedExpression(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Required</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @return the value of the '<em>Required</em>' attribute.
+	 * @see #setRequired(boolean)
+	 * @see org.eclipse.sirius.questionnaire.QuestionnairePackage#getQuestion_Required()
+	 * @model
+	 * @generated
+	 */
+	boolean isRequired();
+
+	/**
+	 * Sets the value of the
+	 * '{@link org.eclipse.sirius.questionnaire.Question#isRequired
+	 * <em>Required</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @param value the new value of the '<em>Required</em>' attribute.
+	 * @see #isRequired()
+	 * @generated
+	 */
+	void setRequired(boolean value);
 
 } // Question

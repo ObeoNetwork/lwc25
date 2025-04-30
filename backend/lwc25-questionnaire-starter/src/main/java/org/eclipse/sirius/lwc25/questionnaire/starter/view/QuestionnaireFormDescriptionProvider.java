@@ -10,7 +10,6 @@ import org.eclipse.sirius.components.view.form.ContainerBorderLineStyle;
 import org.eclipse.sirius.components.view.form.FlexDirection;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.TextfieldDescription;
-import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 
 public class QuestionnaireFormDescriptionProvider implements IRepresentationDescriptionProvider {
 
@@ -257,6 +256,21 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
         forEachLiteral.getChildren().add(literalFlexbox);
         ifIsEnumerationType.getChildren().add(newLiteralButtonDescription);
 
+        var deleteQuestionButtonDescription = formBuilderHelper.newButtonDescription()
+                .name("Delete question")
+                .imageExpression("aql:'/icons/questionnaire/trash.svg'")
+                .body(viewBuilderHelper.newChangeContext()
+                        .expression("aql: " + variable + ".eContainer()")
+                        .children(viewBuilderHelper.newUnsetValue()
+                                .featureName("elements")
+                                .elementExpression("aql: " + variable)
+                                .build())
+                        .build())
+                .style(formBuilderHelper.newButtonDescriptionStyle()
+                        .backgroundColor(colorProvider.getColor("Questionnaire_White"))
+                        .build())
+                .build();
+
         questionContainer.getChildren().add(questionNameDescription);
         questionContainer.getChildren().add(questionTitleDescription);
         questionContainer.getChildren().add(isComputedDescription);
@@ -264,6 +278,7 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
         questionContainer.getChildren().add(selectTypeDescription);
         questionContainer.getChildren().add(ifIsIntegerType);
         questionContainer.getChildren().add(ifIsEnumerationType);
+        questionContainer.getChildren().add(deleteQuestionButtonDescription);
         return questionContainer;
     }
 

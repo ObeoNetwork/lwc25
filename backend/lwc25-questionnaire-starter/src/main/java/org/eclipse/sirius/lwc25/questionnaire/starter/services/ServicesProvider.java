@@ -17,11 +17,13 @@ public class ServicesProvider implements IJavaServiceProvider {
                 .anyMatch(formDesc -> formDesc.getDomainType().equals(type));
 
         if(isSpeciticType.apply("answer::UserAnswers")) {
-            return List.of(UserAnswersService.class);
+            return List.of(UserAnswersAqlService.class, UserAnswersStyleAqlService.class);
         } else if(isSpeciticType.apply("answer::FormAnswers")) {
-            return List.of(FormAnswersService.class);
+            return List.of(FormAnswersAqlService.class);
         } else if(isSpeciticType.apply("questionnaire::Form")) {
-            return List.of(FormService.class);
+            return List.of(FormAqlService.class);
+        } else if(isSpeciticType.apply("qlstyle::QLStyle")) {
+            return List.of(QlStyleAqlService.class);
         }
         return List.of();
     }

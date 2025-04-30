@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin
+      name="%pluginName"
+      id="qlstyle-metamodel-edit"
+      version="1.0.0"
+      provider-name="%providerName"
+      class="org.eclipse.sirius.qlstyle.provider.QLStyleEditPlugin$Implementation">
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="qlstyle-metamodel" export="true"/>
+      <import plugin="org.eclipse.emf.edit" export="true"/>
+      <import plugin="questionnaire-metamodel" export="true"/>
+      <import plugin="questionnaire-metamodel-edit" export="true"/>
+   </requires>
+
+   <runtime>
+      <library name=".">
+         <export name="*"/>
+      </library>
+   </runtime>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated qlstyle -->
+      <factory
+            uri="http://www.example.org/qlstyle"
+            class="org.eclipse.sirius.qlstyle.provider.QLStyleItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource"/>
+   </extension>
+
+</plugin>

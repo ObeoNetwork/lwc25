@@ -36,6 +36,7 @@ public class QuestionnaireStereotypeProvider implements IStereotypeProvider {
 
     public static final String EMPTY_QUESTIONNAIRE = "empty_questionnaire";
     public static final String EMPTY_ANSWERS = "empty_answers";
+    public static final String EMPTY_STYLE = "empty_qlstyle";
 
     private final IProjectSearchService projectSearchService;
 
@@ -61,7 +62,8 @@ public class QuestionnaireStereotypeProvider implements IStereotypeProvider {
         if (isQuestionnaireProject) {
             return List.of(
                     new Stereotype(EMPTY_QUESTIONNAIRE, "Questionnaire"),
-                    new Stereotype(EMPTY_ANSWERS, "Questionnaire Answers")
+                    new Stereotype(EMPTY_ANSWERS, "Questionnaire Answers"),
+                    new Stereotype(EMPTY_ANSWERS, "Questionnaire Style")
             );
         }
         return List.of();

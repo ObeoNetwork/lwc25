@@ -11,11 +11,11 @@ import org.eclipse.sirius.questionnaire.QuestionnaireElement;
 
 import java.util.stream.Collectors;
 
-public class FormService {
+public class FormAqlService {
 
     private final ValidationService validator;
 
-    public FormService(ValidationService validator) {
+    public FormAqlService(ValidationService validator) {
         this.validator = validator;
     }
 

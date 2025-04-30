@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/lwc25-qlstyle-metamodel/src/main/java" editDirectory="/lwc25-qlstyle-metamodel-edit/src/main/java"
+    editorDirectory="lwc25-qlstyle-metamodel-editor/src/main/java" modelPluginID="qlstyle-metamodel"
+    modelName="QLStyle" editPluginClass="org.eclipse.sirius.qlstyle.provider.QLStyleEditPlugin"
+    editorPluginClass="org.eclipse.sirius.qlstyle.presentation.QLStyleEditorPlugin"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" codeFormatting="true"
+    commentFormatting="true" testsDirectory="/lwc25-qlstyle-metamodel-tests/src/main/java"
+    testSuiteClass="org.eclipse.sirius.qlstyle.tests.QLStyleAllTests" importerID="org.eclipse.emf.importer.ecore"
+    bundleManifest="false" complianceLevel="17.0" copyrightFields="false" editPluginID="qlstyle-metamodel-edit"
+    editorPluginID="qlstyle-metamodel-editor" testsPluginID="qlstyle-metamodel-tests"
+    usedGenPackages="../../../../../lwc25-questionnaire-metamodel/src/main/resources/model/questionnaire.genmodel#//questionnaire"
+    operationReflection="true" importOrganizing="true" pluginKey="qlstyle" cleanup="true">
+  <foreignModel>qlstyle.ecore</foreignModel>
+  <genPackages prefix="QLStyle" basePackage="org.eclipse.sirius" disposableProviderFactory="true"
+      ecorePackage="qlstyle.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="qlstyle.ecore#//Widget">
+      <genEnumLiterals ecoreEnumLiteral="qlstyle.ecore#//Widget/Textfield"/>
+      <genEnumLiterals ecoreEnumLiteral="qlstyle.ecore#//Widget/Checkbox"/>
+      <genEnumLiterals ecoreEnumLiteral="qlstyle.ecore#//Widget/Select"/>
+      <genEnumLiterals ecoreEnumLiteral="qlstyle.ecore#//Widget/Slider"/>
+      <genEnumLiterals ecoreEnumLiteral="qlstyle.ecore#//Widget/Radio"/>
+      <genEnumLiterals ecoreEnumLiteral="qlstyle.ecore#//Widget/Date"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="qlstyle.ecore#//GroupLayout">
+      <genEnumLiterals ecoreEnumLiteral="qlstyle.ecore#//GroupLayout/Vertical"/>
+      <genEnumLiterals ecoreEnumLiteral="qlstyle.ecore#//GroupLayout/Horizontal"/>
+    </genEnums>
+    <genClasses ecoreClass="qlstyle.ecore#//QLStyle">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference qlstyle.ecore#//QLStyle/form"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference qlstyle.ecore#//QLStyle/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="qlstyle.ecore#//QuestionCustomization">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qlstyle.ecore#//QuestionCustomization/helpText"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qlstyle.ecore#//QuestionCustomization/widget"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference qlstyle.ecore#//QuestionCustomization/question"/>
+    </genClasses>
+    <genClasses ecoreClass="qlstyle.ecore#//Group">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qlstyle.ecore#//Group/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qlstyle.ecore#//Group/description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qlstyle.ecore#//Group/layout"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference qlstyle.ecore#//Group/elements"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="qlstyle.ecore#//QLStyleElement"/>
+  </genPackages>
+</genmodel:GenModel>

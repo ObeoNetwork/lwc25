@@ -6,45 +6,45 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.QueryParsing;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.answer.Answer;
-import org.eclipse.sirius.answer.AnswerPackage;
-import org.eclipse.sirius.answer.UserAnswers;
+import org.eclipse.sirius.answer.*;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.ecore.extender.business.internal.accessor.ecore.EcoreIntrinsicExtender;
 import org.eclipse.sirius.lwc25.questionnaire.starter.helper.QuestionnaireUtils;
 import org.eclipse.sirius.questionnaire.*;
 
 import java.sql.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-public class UserAnswersService {
+public class UserAnswersAqlService {
 
     private final ValidationService validator;
 
-    public UserAnswersService(ValidationService validator) {
+    public UserAnswersAqlService(ValidationService validator) {
         this.validator = validator;
     }
 
-    public boolean mustBeHidden(ConditionalGroup eObject, UserAnswers answers) {
-        boolean result = eObject.getCondition() != null;
-        var manager = getScopedVariables(eObject, answers);
-        result &= !hasUndefinedVariables(eObject.getCondition(), manager);
+    public boolean mustBeHidden(Question question, UserAnswers answers) {
+        var parent = question.eContainer();
+        boolean result = false;
+        if(parent instanceof ConditionalGroup group){
+            result = group.getCondition() == null;
+            var manager = getScopedVariables(group, answers);
+            result |= hasUndefinedVariables(group.getCondition(), manager);
 
-        if(result) {
-            AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(this), List.of(AnswerPackage.eINSTANCE, QuestionnairePackage.eINSTANCE));
-            result = interpreter.evaluateExpression(manager.getVariables(), eObject.getCondition()).asBoolean().orElse(false);
-        }
+            if (!result) {
+                AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(this), List.of(AnswerPackage.eINSTANCE, QuestionnairePackage.eINSTANCE));
+                result = interpreter.evaluateExpression(manager.getVariables(), group.getCondition()).asBoolean().map(r -> !r).orElse(true);
+            }
 
-        // If the group must be hidden, we reset the result of each hidden answer
-        if(!result) {
-            Streams.stream(eObject.eAllContents())
-                    .filter(Question.class::isInstance)
-                    .map(Question.class::cast)
-                    .map(question -> getCorrespondingAnswer(question, answers))
-                    .flatMap(Optional::stream)
-                    .forEach(answer -> new EcoreIntrinsicExtender().eSet(answer, "answer", null));
+            // If hidden, we reset the value of the answer to this question
+            if(result) {
+                getCorrespondingAnswer(question, answers)
+                        .ifPresent(answer -> new EcoreIntrinsicExtender().eSet(answer, "answer", null));
+            }
         }
 
         return result;
@@ -110,6 +110,26 @@ public class UserAnswersService {
                 .filter(var -> manager.hasVariable(var.getVariableName()))
                 .filter(var -> !var.getVariableName().equals("undefined"))
                 .anyMatch(var -> manager.get(var.getVariableName(), Object.class).isEmpty());
+    }
+
+    public EObject init(UserAnswers userAnswers) {
+        var container = (FormAnswers) userAnswers.eContainer();
+        var answers = new LinkedList<Answer>();
+        generateEmptyAnswers(container.getForm().getElements(), answers);
+        new EcoreIntrinsicExtender().eAdd(userAnswers, "answers", answers);
+        return userAnswers;
+    }
+
+    private void generateEmptyAnswers(List<QuestionnaireElement> elements, List<Answer> answers) {
+        for(var element: elements) {
+            if(element instanceof Question question) {
+                var answer = AnswerFactory.eINSTANCE.createAnswer();
+                answer.setQuestion(question);
+                answers.add(answer);
+            } else if (element instanceof ConditionalGroup group) {
+                generateEmptyAnswers(group.getElements(), answers);
+            }
+        }
     }
 
 }
