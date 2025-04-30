@@ -28,7 +28,7 @@ public class QuestionnaireProjectTemplatesProvider implements IProjectTemplatePr
 
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
-        var flowTemplate = new ProjectTemplate(QUESTIONNAIRE_TEMPLATE_ID, "Questionnaire", "/project-templates/Questionnaire-Template.svg", List.of(new ProjectTemplateNature(QUESTIONNAIRE_NATURE)));
+        var flowTemplate = new ProjectTemplate(QUESTIONNAIRE_TEMPLATE_ID, "Questionnaire", "/project-templates/Project-Template.png", List.of(new ProjectTemplateNature(QUESTIONNAIRE_NATURE)));
         return List.of(flowTemplate);
     }
 
