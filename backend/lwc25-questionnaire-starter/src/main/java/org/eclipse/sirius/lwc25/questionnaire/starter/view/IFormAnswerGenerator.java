@@ -13,29 +13,29 @@ public interface IFormAnswerGenerator {
 
     String canHandle();
 
-    List<FormElementDescription> generateIntegerWidget(String elementExpression);
-    List<FormElementDescription> generateBooleanWidget(String elementExpression);
-    List<FormElementDescription> generateDateWidget(String elementExpression);
-    List<FormElementDescription> generateDecimalWidget(String elementExpression);
-    List<FormElementDescription> generateEnumerationWidget(String elementExpression);
-    List<FormElementDescription> generateStringWidget(String elementExpression);
-    List<FormElementDescription> generateMoneyWidget(String elementExpression);
+    List<FormElementDescription> generateIntegerWidget(String elementExpression, String currentQuestionExpression);
+    List<FormElementDescription> generateBooleanWidget(String elementExpression, String currentQuestionExpression);
+    List<FormElementDescription> generateDateWidget(String elementExpression, String currentQuestionExpression);
+    List<FormElementDescription> generateDecimalWidget(String elementExpression, String currentQuestionExpression);
+    List<FormElementDescription> generateEnumerationWidget(String elementExpression, String currentQuestionExpression);
+    List<FormElementDescription> generateStringWidget(String elementExpression, String currentQuestionExpression);
+    List<FormElementDescription> generateMoneyWidget(String elementExpression, String currentQuestionExpression);
 
-    default List<FormElementDescription> dispatchType(EClass clazz, String elementExpression) {
+    default List<FormElementDescription> dispatchType(EClass clazz, String elementExpression, String currentQuestionExpression, boolean isReuse) {
         if(clazz == QuestionnairePackage.eINSTANCE.getIntegerType()) {
-            return generateIntegerWidget(elementExpression);
+            return generateIntegerWidget(elementExpression, currentQuestionExpression);
         } else if(clazz == QuestionnairePackage.eINSTANCE.getBooleanType()) {
-            return generateBooleanWidget(elementExpression);
+            return generateBooleanWidget(elementExpression, currentQuestionExpression);
         } else if(clazz == QuestionnairePackage.eINSTANCE.getDateType()) {
-            return generateDateWidget(elementExpression);
+            return generateDateWidget(elementExpression, currentQuestionExpression);
         } else if(clazz == QuestionnairePackage.eINSTANCE.getDecimalType()) {
-            return generateDecimalWidget(elementExpression);
+            return generateDecimalWidget(elementExpression, currentQuestionExpression);
         } else if(clazz == QuestionnairePackage.eINSTANCE.getEnumerationType()) {
-            return generateEnumerationWidget(elementExpression);
+            return generateEnumerationWidget(elementExpression, currentQuestionExpression);
         } else if(clazz == QuestionnairePackage.eINSTANCE.getStringType()) {
-            return generateStringWidget(elementExpression);
+            return generateStringWidget(elementExpression, currentQuestionExpression);
         } else if(clazz == QuestionnairePackage.eINSTANCE.getMoneyType()) {
-            return generateMoneyWidget(elementExpression);
+            return generateMoneyWidget(elementExpression, currentQuestionExpression);
         }
         return null;
     }

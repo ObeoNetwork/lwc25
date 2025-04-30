@@ -40,7 +40,7 @@ public class QlStyleAqlService {
 
     public boolean init(QLStyle style) {
         if(style.getForm() != null) {
-            var questions = Streams.stream(style.getForm().eAllContents()).filter(Question.class::isInstance).map(Question.class::cast).toList();
+            var questions = Streams.stream(style.getForm().eAllContents()).filter(q -> q instanceof Question || q instanceof QuestionReuse).map(QuestionnaireElement.class::cast).toList();
 
             Streams.stream(style.eAllContents())
                     .filter(QuestionCustomization.class::isInstance)
@@ -53,7 +53,9 @@ public class QlStyleAqlService {
                 if(styleOpt.isEmpty()) {
                     var newStyle = QLStyleFactory.eINSTANCE.createQuestionCustomization();
                     newStyle.setQuestion(question);
-                    newStyle.setWidget(typeToWidget(question.getType()));
+                    if(question instanceof Question q) {
+                        newStyle.setWidget(typeToWidget(q.getType()));
+                    }
                     new EcoreIntrinsicExtender().eAdd(style, "elements", newStyle);
                 }
             }
@@ -62,7 +64,7 @@ public class QlStyleAqlService {
         return false;
     }
 
-    private Optional<QuestionCustomization> getStyle(Question question, QLStyle qlstyle) {
+    private Optional<QuestionCustomization> getStyle(QuestionnaireElement question, QLStyle qlstyle) {
         return Streams.stream(qlstyle.eAllContents())
                 .filter(QuestionCustomization.class::isInstance)
                 .map(QuestionCustomization.class::cast)

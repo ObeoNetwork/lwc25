@@ -1,5 +1,6 @@
 package org.eclipse.sirius.lwc25.questionnaire.starter.view;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.builder.generated.form.FormBuilders;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
@@ -29,11 +30,11 @@ public class StyleFormAnswerGenerator implements IFormAnswerGenerator {
     }
 
     @Override
-    public List<FormElementDescription> generateIntegerWidget(String elementExpression) {
-        var valueExpression = "aql: let result = self.answers->any(answer | answer.question = " + elementExpression + ".question).answer in if result.matches('\\\\d+') then result.toInteger() else null endif";
-        Supplier<Operation> body = () -> viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + elementExpression + ".question)", "answer");
-        var diagnosticExpression = "aql: self.answers->any(answer | answer.question = " + elementExpression + ".question).validateValue()";
-        var candidateExpression = "aql: " + elementExpression + ".question.type.generateIntList()";
+    public List<FormElementDescription> generateIntegerWidget(String elementExpression, String currentQuestionExpression) {
+        var valueExpression = "aql: let result = self.answers->any(answer | answer.question = " + currentQuestionExpression + ").answer in if result.matches('\\\\d+') then result.toInteger() else null endif";
+        Supplier<Operation> body = () -> viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestionExpression + ")", "answer");
+        var diagnosticExpression = "aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").validateValue()";
+        var candidateExpression = "aql: " + currentQuestionExpression + ".type.generateIntList()";
 
         var ifIsTextfield = formBuilderHelper.newFormElementIf()
                 .name("If Integer Textfield")
@@ -42,7 +43,7 @@ public class StyleFormAnswerGenerator implements IFormAnswerGenerator {
 
         var textfield = formBuilderHelper.newTextfieldDescription()
                 .name("Integer Textfield Question")
-                .labelExpression("aql: " + elementExpression + ".question.label")
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
                 .valueExpression(valueExpression)
                 .body(body.get())
                 .diagnosticsExpression(diagnosticExpression)
@@ -56,7 +57,7 @@ public class StyleFormAnswerGenerator implements IFormAnswerGenerator {
 
         var select = formBuilderHelper.newSelectDescription()
                 .name("Integer Select Question")
-                .labelExpression("aql: " + elementExpression + ".question.label")
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
                 .valueExpression(valueExpression)
                 .candidatesExpression(candidateExpression)
                 .candidateLabelExpression("aql: candidate")
@@ -71,7 +72,7 @@ public class StyleFormAnswerGenerator implements IFormAnswerGenerator {
 
         var radio = formBuilderHelper.newRadioDescription()
                 .name("Integer Radio Question")
-                .labelExpression("aql: " + elementExpression + ".question.label")
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
                 .valueExpression(valueExpression)
                 .candidatesExpression(candidateExpression)
                 .candidateLabelExpression("aql: candidate")
@@ -86,10 +87,10 @@ public class StyleFormAnswerGenerator implements IFormAnswerGenerator {
 
         var slider = formBuilderHelper.newSliderDescription()
                 .name("Integer Slider Question")
-                .labelExpression("aql: " + elementExpression + ".question.label")
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
                 .currentValueExpression(valueExpression)
-                .maxValueExpression("aql:" + elementExpression + ".question.type.max")
-                .minValueExpression("aql:" + elementExpression + ".question.type.min")
+                .maxValueExpression("aql:" + currentQuestionExpression + ".type.max")
+                .minValueExpression("aql:" + currentQuestionExpression + ".type.min")
                 .body(body.get())
                 .diagnosticsExpression(diagnosticExpression)
                 .helpExpression("aql: " + elementExpression + ".helpText")
@@ -103,9 +104,9 @@ public class StyleFormAnswerGenerator implements IFormAnswerGenerator {
     }
 
     @Override
-    public List<FormElementDescription> generateBooleanWidget(String elementExpression) {
-        var valueExpression = "aql: self.answers->any(answer | answer.question = " + elementExpression + ".question).answer";
-        Supplier<Operation> body = () -> viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + elementExpression + ".question)", "answer");
+    public List<FormElementDescription> generateBooleanWidget(String elementExpression, String currentQuestionExpression) {
+        var valueExpression = "aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").answer";
+        Supplier<Operation> body = () -> viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestionExpression + ")", "answer");
         var candidateExpression = "aql: Sequence{ 'true', 'false' }";
 
         var ifIsCheckbox = formBuilderHelper.newFormElementIf()
@@ -115,7 +116,7 @@ public class StyleFormAnswerGenerator implements IFormAnswerGenerator {
 
         var checkbox = formBuilderHelper.newCheckboxDescription()
                 .name("Boolean Question")
-                .labelExpression("aql: " + elementExpression + ".question.label")
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
                 .valueExpression(valueExpression + ".toBoolean()")
                 .body(body.get())
                 .build();
@@ -127,7 +128,7 @@ public class StyleFormAnswerGenerator implements IFormAnswerGenerator {
 
         var select = formBuilderHelper.newSelectDescription()
                 .name("Boolean Select Question")
-                .labelExpression("aql: " + elementExpression + ".question.label")
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
                 .valueExpression(valueExpression)
                 .candidatesExpression(candidateExpression)
                 .candidateLabelExpression("aql: candidate")
@@ -142,7 +143,7 @@ public class StyleFormAnswerGenerator implements IFormAnswerGenerator {
 
         var radio = formBuilderHelper.newRadioDescription()
                 .name("Boolean Radio Question")
-                .labelExpression("aql: " + elementExpression + ".question.label")
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
                 .valueExpression(valueExpression)
                 .candidatesExpression(candidateExpression)
                 .candidateLabelExpression("aql: candidate")
@@ -158,34 +159,34 @@ public class StyleFormAnswerGenerator implements IFormAnswerGenerator {
     }
 
     @Override
-    public List<FormElementDescription> generateDateWidget(String elementExpression) {
+    public List<FormElementDescription> generateDateWidget(String elementExpression, String currentQuestionExpression) {
         return List.of(formBuilderHelper.newDateTimeDescription()
                 .name("Date Question")
-                .labelExpression("aql: " + elementExpression + ".question.label")
-                .stringValueExpression("aql: self.answers->any(answer | answer.question = " + elementExpression + ".question).answer")
-                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + elementExpression + ".question)", "answer", "aql:newValue"))
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
+                .stringValueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").answer")
+                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestionExpression + ")", "answer", "aql:newValue"))
                 .helpExpression("aql: " + elementExpression + ".helpText")
                 .build());
     }
 
     @Override
-    public List<FormElementDescription> generateDecimalWidget(String elementExpression) {
+    public List<FormElementDescription> generateDecimalWidget(String elementExpression, String currentQuestionExpression) {
         return List.of(formBuilderHelper.newTextfieldDescription()
                 .name("Decimal Question")
-                .labelExpression("aql: " + elementExpression + ".question.label")
-                .valueExpression("aql: self.answers->any(answer | answer.question = " + elementExpression + ".question).answer")
-                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + elementExpression + ".question)", "answer", "aql:newValue"))
-                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + elementExpression + ".question).validateValue()")
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
+                .valueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").answer")
+                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestionExpression + ")", "answer", "aql:newValue"))
+                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").validateValue()")
                 .helpExpression("aql: " + elementExpression + ".helpText")
                 .build());
     }
 
     @Override
-    public List<FormElementDescription> generateEnumerationWidget(String elementExpression) {
-        var valueExpression = "aql: self.answers->any(answer | answer.question = " + elementExpression + ".question).answer";
-        var candidatesExpression = "aql: self.answers->any(answer | answer.question = " + elementExpression + ".question).question.type.enumerationliteral.name";
-        Supplier<Operation> body = () -> viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + elementExpression + ".question)", "answer", "aql:newValue");
-        var diagnosticExpression = "aql: self.answers->any(answer | answer.question = " + elementExpression + ".question).validateValue()";
+    public List<FormElementDescription> generateEnumerationWidget(String elementExpression, String currentQuestionExpression) {
+        var valueExpression = "aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").answer";
+        var candidatesExpression = "aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").question.type.enumerationliteral.name";
+        Supplier<Operation> body = () -> viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestionExpression + ")", "answer", "aql:newValue");
+        var diagnosticExpression = "aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").validateValue()";
 
         var ifIsSelect = formBuilderHelper.newFormElementIf()
                 .name("If Enumeration Select")
@@ -194,7 +195,7 @@ public class StyleFormAnswerGenerator implements IFormAnswerGenerator {
 
         var select = formBuilderHelper.newSelectDescription()
                 .name("Enumeration Question")
-                .labelExpression("aql: " + elementExpression + ".question.label")
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
                 .valueExpression(valueExpression)
                 .candidatesExpression(candidatesExpression)
                 .body(body.get())
@@ -210,7 +211,7 @@ public class StyleFormAnswerGenerator implements IFormAnswerGenerator {
 
         var radio = formBuilderHelper.newRadioDescription()
                 .name("Enumeration Question")
-                .labelExpression("aql: " + elementExpression + ".question.label")
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
                 .valueExpression(valueExpression)
                 .candidatesExpression(candidatesExpression)
                 .body(body.get())
@@ -226,24 +227,24 @@ public class StyleFormAnswerGenerator implements IFormAnswerGenerator {
     }
 
     @Override
-    public List<FormElementDescription> generateStringWidget(String elementExpression) {
+    public List<FormElementDescription> generateStringWidget(String elementExpression, String currentQuestionExpression) {
         return List.of(formBuilderHelper.newTextfieldDescription()
                 .name("String Question")
-                .labelExpression("aql: " + elementExpression + ".question.label")
-                .valueExpression("aql: self.answers->any(answer | answer.question = " + elementExpression + ".question).answer")
-                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + elementExpression + ".question)", "answer", "aql:newValue"))
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
+                .valueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").answer")
+                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestionExpression + ")", "answer", "aql:newValue"))
                 .helpExpression("aql: " + elementExpression + ".helpText")
                 .build());
     }
 
     @Override
-    public List<FormElementDescription> generateMoneyWidget(String elementExpression) {
+    public List<FormElementDescription> generateMoneyWidget(String elementExpression, String currentQuestionExpression) {
         return List.of(formBuilderHelper.newTextfieldDescription()
                 .name("Money Question")
-                .labelExpression("aql: " + elementExpression + ".question.label")
-                .valueExpression("aql: self.answers->any(answer | answer.question = " + elementExpression + ".question).answer + '€'")
-                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + elementExpression + ".question)", "answer", "aql:newValue.toString().replaceAll('€', '')"))
-                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + elementExpression + ".question).validateValue()")
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
+                .valueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").answer + '€'")
+                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestionExpression + ")", "answer", "aql:newValue.toString().replaceAll('€', '')"))
+                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").validateValue()")
                 .helpExpression("aql: " + elementExpression + ".helpText")
                 .build());
     }
@@ -268,5 +269,12 @@ public class StyleFormAnswerGenerator implements IFormAnswerGenerator {
                 .name("If The Condition Of The Group Is Valid")
                 .predicateExpression("aql: not " + elementExpression + ".mustBeHidden(self)")
                 .build();
+    }
+
+    @Override
+    public List<FormElementDescription> dispatchType(EClass clazz, String elementExpression, String currentQuestionExpression, boolean isReuse) {
+        // We search the style of the reused question to reuse it too
+        elementExpression = isReuse ? elementExpression + ".eContainer(qlstyle::QLStyle).eAllContents()->any(style | style.question = " + currentQuestionExpression + ")" : elementExpression;
+        return IFormAnswerGenerator.super.dispatchType(clazz, elementExpression, currentQuestionExpression, isReuse);
     }
 }

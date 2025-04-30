@@ -92,10 +92,6 @@ public class QLStyleFormDescriptionProvider implements IRepresentationDescriptio
                         .build())
                 .build();
 
-        var contentGroup = formBuilderHelper.newFlexboxContainerDescription()
-                .flexDirection(FlexDirection.COLUMN)
-                .build();
-
         var upButton = formBuilderHelper.newButtonDescription()
                 .imageExpression("aql:'/icons/questionnaire/backward.svg'")
                 .name("Move Element backward")
@@ -115,8 +111,43 @@ public class QLStyleFormDescriptionProvider implements IRepresentationDescriptio
                 .children(upButton, downButton)
                 .build();
 
+        var ifIsQuestion = formBuilderHelper.newFormElementIf()
+                .predicateExpression("aql: " + currentStyle + ".question.oclIsKindOf(questionnaire::Question)")
+                .children(getQuestionStyleDescription(currentStyle, colorProvider))
+                .build();
+
+        var ifIsQuestionReuse = formBuilderHelper.newFormElementIf()
+                .predicateExpression("aql: " + currentStyle + ".question.oclIsKindOf(questionnaire::QuestionReuse)")
+                .children(getQuestionReuseStyleDescription(currentStyle))
+                .build();
+
+
+        questionGroup.getChildren().add(controlGroup);
+        questionGroup.getChildren().add(ifIsQuestion);
+        questionGroup.getChildren().add(ifIsQuestionReuse);
+
+        return questionGroup;
+    }
+
+    private FormElementDescription getQuestionReuseStyleDescription(String currentStyle) {
         var questionTitle = formBuilderHelper.newLabelDescription()
-                .valueExpression("aql: 'Question: ' + " + currentStyle + ".question.label")
+                .valueExpression("aql: 'Reuse of ' + " + currentStyle + ".question.question.name")
+                .style(formBuilderHelper.newLabelDescriptionStyle().bold(true).fontSize(16).build())
+                .build();
+
+        return formBuilderHelper.newFlexboxContainerDescription()
+                .flexDirection(FlexDirection.COLUMN)
+                .children(questionTitle)
+                .build();
+    }
+
+    private FormElementDescription getQuestionStyleDescription(String currentStyle, IColorProvider colorProvider) {
+        var contentGroup = formBuilderHelper.newFlexboxContainerDescription()
+                .flexDirection(FlexDirection.COLUMN)
+                .build();
+
+        var questionTitle = formBuilderHelper.newLabelDescription()
+                .valueExpression("aql: if " + currentStyle + ".question.computedExpression.size() > 0 then 'Computed ' else '' endif + 'Question: ' + " + currentStyle + ".question.name")
                 .style(formBuilderHelper.newLabelDescriptionStyle().bold(true).fontSize(16).build())
                 .build();
 
@@ -340,9 +371,7 @@ public class QLStyleFormDescriptionProvider implements IRepresentationDescriptio
         resultGroup.getChildren().add(ifIsRadio);
         resultGroup.getChildren().add(ifIsDate);
         contentGroup.getChildren().add(ifIsNotComputed);
-        questionGroup.getChildren().add(controlGroup);
-        questionGroup.getChildren().add(contentGroup);
 
-        return questionGroup;
+        return contentGroup;
     }
 }

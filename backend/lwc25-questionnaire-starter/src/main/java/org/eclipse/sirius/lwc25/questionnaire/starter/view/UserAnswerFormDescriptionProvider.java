@@ -11,7 +11,7 @@ import org.eclipse.sirius.questionnaire.QuestionnairePackage;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Supplier;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class UserAnswerFormDescriptionProvider implements IRepresentationDescriptionProvider {
@@ -104,36 +104,32 @@ public class UserAnswerFormDescriptionProvider implements IRepresentationDescrip
             var loop = generator.generateLoop();
             var questionExpression = generator.getQuestionFromIteratorExpression();
 
-            Supplier<FormElementDescription> questionWithDisplayConditionDesc = () -> {
-                var description = generator.generateDisplayCondition(questionExpression);
-                description.getChildren().addAll(getQuestionDescriptions(questionExpression, generator));
+            BiFunction<String, Boolean, FormElementDescription> questionWithDisplayConditionDesc = (questionExpr, isReuse) -> {
+                var description = generator.generateDisplayCondition(questionExpr);
+                description.getChildren().addAll(getQuestionDescriptions(questionExpr, generator, isReuse));
                 return description;
             };
 
-            var ifAnswerExist = formBuilderHelper.newFormElementIf()
-                    .name("If An Answer Element Exists")
-                    .predicateExpression("aql: it.question.computedExpression.size() > 0 or self.answers->exists(answer | answer.question = it.question)")
+            var ifAnswerExistForQuestion = formBuilderHelper.newFormElementIf()
+                    .name("If An Answer Element Exists For Question")
+                    .predicateExpression("aql: " + questionExpression + ".oclIsKindOf(questionnaire::Question) and (" + questionExpression + ".computedExpression.size() > 0 or self.answers->exists(answer | answer.question = " + questionExpression + "))")
+                    .children(questionWithDisplayConditionDesc.apply(questionExpression, false))
                     .build();
 
-            var ifIsQuestion = formBuilderHelper.newFormElementIf()
-                    .name("If Element Is Question")
-                    .predicateExpression("aql: " + questionExpression + ".oclIsKindOf(questionnaire::Question)")
-                    .children(questionWithDisplayConditionDesc.get())
+            var ifAnswerExistForQuestionReuse = formBuilderHelper.newFormElementIf()
+                    .name("If An Answer Element Exists For Question Reuse")
+                    .predicateExpression("aql: " + questionExpression + ".oclIsKindOf(questionnaire::QuestionReuse) and (" + questionExpression + ".question.computedExpression.size() > 0 or self.answers->exists(answer | answer.question = " + questionExpression + ".question))")
+                    .children(questionWithDisplayConditionDesc.apply(questionExpression + ".question", true))
                     .build();
 
-            var ifIsReuseQuestion = formBuilderHelper.newFormElementIf()
-                    .name("If Element Is Question Reuse")
-                    .predicateExpression("aql: " + questionExpression + ".oclIsKindOf(questionnaire::QuestionReuse)");
-
-            ifAnswerExist.getChildren().addAll(List.of(ifIsQuestion, ifIsReuseQuestion.children(questionWithDisplayConditionDesc.get()).build()));
-            loop.getChildren().add(ifAnswerExist);
+            loop.getChildren().addAll(List.of(ifAnswerExistForQuestionReuse, ifAnswerExistForQuestion));
             ifCanHandleAndNotRendered.getChildren().add(loop);
             result.add(ifCanHandleAndNotRendered);
         }
         return result;
     }
 
-    private List<FormElementDescription> getQuestionDescriptions(String currentQuestionExpression, IFormAnswerGenerator generator) {
+    private List<FormElementDescription> getQuestionDescriptions(String currentQuestionExpression, IFormAnswerGenerator generator, boolean isReuse) {
         var ifIsNotComputed = formBuilderHelper.newFormElementIf()
                 .name("If Question Is Not Computed")
                 .predicateExpression("aql: " + currentQuestionExpression + ".computedExpression.size() = 0")
@@ -148,7 +144,7 @@ public class UserAnswerFormDescriptionProvider implements IRepresentationDescrip
                 .map(type -> (FormElementDescription) formBuilderHelper.newFormElementIf()
                         .name("If Element Is " + type.getName() + " Question")
                         .predicateExpression("aql: " + currentQuestionExpression + ".type.oclIsKindOf(questionnaire::" + type.getName() + ")")
-                        .children(generator.dispatchType(type, "it").toArray(FormElementDescription[]::new))
+                        .children(generator.dispatchType(type, "it", currentQuestionExpression, isReuse).toArray(FormElementDescription[]::new))
                         .build())
                 .toList());
 

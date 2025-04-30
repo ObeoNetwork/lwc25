@@ -20,78 +20,78 @@ public class DefaultFormAnswerGenerator implements IFormAnswerGenerator {
     }
 
     @Override
-    public List<FormElementDescription> generateIntegerWidget(String elementExpression) {
+    public List<FormElementDescription> generateIntegerWidget(String elementExpression, String currentQuestionExpression) {
         return List.of(formBuilderHelper.newTextfieldDescription()
                 .name("Integer Question")
-                .labelExpression("aql: " + elementExpression + ".label")
-                .valueExpression("aql: self.answers->any(answer | answer.question = " + elementExpression + ").answer")
-                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + elementExpression + ")", "answer"))
-                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + elementExpression + ").validateValue()")
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
+                .valueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").answer")
+                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestionExpression + ")", "answer"))
+                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").validateValue()")
                 .build());
     }
 
     @Override
-    public List<FormElementDescription> generateBooleanWidget(String elementExpression) {
+    public List<FormElementDescription> generateBooleanWidget(String elementExpression, String currentQuestionExpression) {
         return List.of(formBuilderHelper.newCheckboxDescription()
                 .name("Boolean Question")
-                .labelExpression("aql: " + elementExpression + ".label")
-                .valueExpression("aql: self.answers->any(answer | answer.question = " + elementExpression + ").answer")
-                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + elementExpression + ")", "answer"))
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
+                .valueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").answer")
+                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestionExpression + ")", "answer"))
                 .build());
     }
 
     @Override
-    public List<FormElementDescription> generateDateWidget(String elementExpression) {
+    public List<FormElementDescription> generateDateWidget(String elementExpression, String currentQuestionExpression) {
         return List.of(formBuilderHelper.newDateTimeDescription()
                 .name("Date Question")
-                .labelExpression("aql: " + elementExpression + ".label")
-                .stringValueExpression("aql: self.answers->any(answer | answer.question = " + elementExpression + ").answer")
-                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + elementExpression + ")", "answer"))
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
+                .stringValueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").answer")
+                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestionExpression + ")", "answer"))
                 .build());
     }
 
     @Override
-    public List<FormElementDescription> generateDecimalWidget(String elementExpression) {
+    public List<FormElementDescription> generateDecimalWidget(String elementExpression, String currentQuestionExpression) {
         return List.of(formBuilderHelper.newTextfieldDescription()
                 .name("Decimal Question")
-                .labelExpression("aql: " + elementExpression + ".label")
-                .valueExpression("aql: self.answers->any(answer | answer.question = " + elementExpression + ").answer")
-                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + elementExpression + ")", "answer"))
-                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + elementExpression + ").validateValue()")
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
+                .valueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").answer")
+                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestionExpression + ")", "answer"))
+                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").validateValue()")
                 .build());
     }
 
     @Override
-    public List<FormElementDescription> generateEnumerationWidget(String elementExpression) {
+    public List<FormElementDescription> generateEnumerationWidget(String elementExpression, String currentQuestionExpression) {
         return List.of(formBuilderHelper.newSelectDescription()
                 .name("Enumeration Question")
-                .labelExpression("aql: " + elementExpression + ".label")
-                .valueExpression("aql: self.answers->any(answer | answer.question = " + elementExpression + ").answer")
-                .candidatesExpression("aql: self.answers->any(answer | answer.question = " + elementExpression + ").question.type.enumerationliteral.name")
-                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + elementExpression + ")", "answer"))
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
+                .valueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").answer")
+                .candidatesExpression("aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").question.type.enumerationliteral.name")
+                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestionExpression + ")", "answer"))
                 .candidateLabelExpression("aql: candidate")
-                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + elementExpression + ").validateValue()")
+                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").validateValue()")
                 .build());
     }
 
     @Override
-    public List<FormElementDescription> generateStringWidget(String elementExpression) {
+    public List<FormElementDescription> generateStringWidget(String elementExpression, String currentQuestionExpression) {
         return List.of(formBuilderHelper.newTextfieldDescription()
                 .name("String Question")
-                .labelExpression("aql: " + elementExpression + ".label")
-                .valueExpression("aql: self.answers->any(answer | answer.question = " + elementExpression + ").answer")
-                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + elementExpression + ")", "answer"))
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
+                .valueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").answer")
+                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestionExpression + ")", "answer"))
                 .build());
     }
 
     @Override
-    public List<FormElementDescription> generateMoneyWidget(String elementExpression) {
+    public List<FormElementDescription> generateMoneyWidget(String elementExpression, String currentQuestionExpression) {
         return List.of(formBuilderHelper.newTextfieldDescription()
                 .name("Money Question")
-                .labelExpression("aql: " + elementExpression + ".label")
-                .valueExpression("aql: self.answers->any(answer | answer.question = " + elementExpression + ").answer + '€'")
-                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + elementExpression + ")", "answer", "aql:newValue.toString().replaceAll('€', '')"))
-                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + elementExpression + ").validateValue()")
+                .labelExpression("aql: " + currentQuestionExpression + ".label")
+                .valueExpression("aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").answer + '€'")
+                .body(viewUtils.textfieldSetter("self.answers->any(answer | answer.question = " + currentQuestionExpression + ")", "answer", "aql:newValue.toString().replaceAll('€', '')"))
+                .diagnosticsExpression("aql: self.answers->any(answer | answer.question = " + currentQuestionExpression + ").validateValue()")
                 .build());
     }
 
