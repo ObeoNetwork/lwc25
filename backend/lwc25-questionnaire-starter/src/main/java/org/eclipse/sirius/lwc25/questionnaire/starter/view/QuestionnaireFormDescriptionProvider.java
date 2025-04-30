@@ -11,6 +11,8 @@ import org.eclipse.sirius.components.view.form.FlexDirection;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.TextfieldDescription;
 
+import java.util.List;
+
 public class QuestionnaireFormDescriptionProvider implements IRepresentationDescriptionProvider {
 
     private final FormBuilders formBuilderHelper = new FormBuilders();
@@ -43,11 +45,7 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
                 .name("For Each Elements")
                 .build();
 
-        var ifIsQuestionDescription = formBuilderHelper.newFormElementIf()
-                .name("If Is Question")
-                .predicateExpression("aql:element.oclIsKindOf(questionnaire::Question)")
-                .children(getElementDescription(colorProvider, "element", "self"))
-                .build();
+
 
         var ifIsConditionalGroupDescription = formBuilderHelper.newFormElementIf()
                 .name("If Is Conditional Group Description")
@@ -55,39 +53,60 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
                 .children(getFormGroupDescription(colorProvider))
                 .build();
 
-        var ifIsQuestionReuseDescription = formBuilderHelper.newFormElementIf()
-                        .name("If Is Reuse Question Description")
-                        .predicateExpression("aql:element.oclIsKindOf(questionnaire::QuestionReuse)")
-                        .build();
-
-        var reuseRefDescription = new ReferenceWidgetDescriptionBuilder()
-                .referenceOwnerExpression("aql: element")
-                .referenceNameExpression("question")
-                .body(viewUtils.textfieldSetter("element", "question", "aql:newValue"))
-                .labelExpression("aql: 'Question ' + self.elements->indexOf(element) + if element.question.name.size() == 0 then '' else ': reuse of ' + element.question.name endif")
-                .build();
-
-        ifIsQuestionReuseDescription.getChildren().add(reuseRefDescription);
-
         formDescription.getPages().add(pageDescription);
         pageDescription.getGroups().add(renderGroupDescription);
         renderGroupDescription.getChildren().add(forEachQuestionDescription);
-        forEachQuestionDescription.getChildren().add(ifIsQuestionDescription);
         forEachQuestionDescription.getChildren().add(ifIsConditionalGroupDescription);
-        forEachQuestionDescription.getChildren().add(ifIsQuestionReuseDescription);
-        renderGroupDescription.getChildren().add(this.createButtonDescription("self", true));
+        forEachQuestionDescription.getChildren().addAll(getFormElementDescription(colorProvider, "element"));
+        renderGroupDescription.getChildren().add(this.createButtonDescription("self", false, colorProvider));
 
         return formDescription;
     }
 
-    public FormElementDescription getElementDescription(IColorProvider colorProvider, String variable, String parent) {
+    public List<FormElementDescription> getFormElementDescription(IColorProvider colorProvider, String variable) {
+        var ifIsQuestionDescription = formBuilderHelper.newFormElementIf()
+                .name("If Is Question")
+                .predicateExpression("aql:" + variable + ".oclIsKindOf(questionnaire::Question)")
+                .children(getQuestionDescription(colorProvider, variable))
+                .build();
+
+        var ifIsQuestionReuseDescription = formBuilderHelper.newFormElementIf()
+                .name("If Is Reuse Question Description")
+                .predicateExpression("aql:" + variable + ".oclIsKindOf(questionnaire::QuestionReuse)")
+                .build();
+
         var questionContainer = formBuilderHelper.newFlexboxContainerDescription()
                 .flexDirection(FlexDirection.COLUMN)
                 .borderStyle(formBuilderHelper.newContainerBorderStyle()
                         .borderLineStyle(ContainerBorderLineStyle.DASHED)
                         .borderColor(colorProvider.getColor("Questionnaire_Gray"))
                         .build())
-                .labelExpression("aql: 'Question ' + " + parent + ".elements->indexOf(" + variable + ") + if " + variable + ".name.size() == 0 then '' else ': ' + " + variable + ".name endif")
+                .labelExpression(String.format("aql: 'Question ' + self.eAllContents()->filter({questionnaire::Question | questionnaire::QuestionReuse})->indexOf(%s) + if %s.question.name.size() == 0 then '' else ': reuse of ' + %s.question.name endif",
+                                variable, variable, variable))
+                .build();
+
+        var reuseRefDescription = new ReferenceWidgetDescriptionBuilder()
+                .referenceOwnerExpression("aql: " + variable)
+                .referenceNameExpression("question")
+                .body(viewUtils.textfieldSetter(variable, "question", "aql:newValue"))
+                .labelExpression("Question to reuse")
+                .build();
+
+        ifIsQuestionReuseDescription.getChildren().add(questionContainer);
+        questionContainer.getChildren().add(reuseRefDescription);
+        questionContainer.getChildren().add(createDeleteButton(variable, "elements", "Delete question", colorProvider));
+
+        return List.of(ifIsQuestionDescription, ifIsQuestionReuseDescription);
+    }
+
+    public FormElementDescription getQuestionDescription(IColorProvider colorProvider, String variable) {
+        var questionContainer = formBuilderHelper.newFlexboxContainerDescription()
+                .flexDirection(FlexDirection.COLUMN)
+                .borderStyle(formBuilderHelper.newContainerBorderStyle()
+                        .borderLineStyle(ContainerBorderLineStyle.DASHED)
+                        .borderColor(colorProvider.getColor("Questionnaire_Gray"))
+                        .build())
+                .labelExpression("aql: 'Question ' + self.eAllContents()->filter({questionnaire::Question | questionnaire::QuestionReuse})->indexOf(" + variable + ") + if " + variable + ".name.size() == 0 then '' else ': ' + " + variable + ".name endif")
                 .build();
 
         var questionNameDescription = formBuilderHelper.newTextfieldDescription()
@@ -127,7 +146,7 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
                 .build();
 
         var computedExpressionDescription = getAqlField(colorProvider,
-                "Computed expression",
+                "aql: 'Computed expression for ' + " + variable + ".name",
                 "aql: " + variable + ".computedExpression", variable,
                 "computedExpression",
                 "aql: 'An AQL expression to compute the string to display. Available variables: ' + " + variable + ".getScopedVariablesAsString() + '.'"
@@ -221,20 +240,7 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
                 .body(viewUtils.textfieldSetter("literal", "name"))
                 .build();
 
-        var deleteLiteralDescription = formBuilderHelper.newButtonDescription()
-                .name("Delete Literal")
-                .imageExpression("aql:'/icons/questionnaire/trash.svg'")
-                .body(viewBuilderHelper.newChangeContext()
-                        .expression("aql: literal.eContainer()")
-                        .children(viewBuilderHelper.newUnsetValue()
-                                .featureName("enumerationliteral")
-                                .elementExpression("aql: literal")
-                                .build())
-                        .build())
-                .style(formBuilderHelper.newButtonDescriptionStyle()
-                        .backgroundColor(colorProvider.getColor("Questionnaire_White"))
-                        .build())
-                .build();
+        var deleteLiteralDescription = createDeleteButton("literal", "enumerationliteral", "Delete literal", colorProvider);
 
         literalFlexbox.getChildren().add(literalTextFieldDescription);
         literalFlexbox.getChildren().add(deleteLiteralDescription);
@@ -256,20 +262,7 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
         forEachLiteral.getChildren().add(literalFlexbox);
         ifIsEnumerationType.getChildren().add(newLiteralButtonDescription);
 
-        var deleteQuestionButtonDescription = formBuilderHelper.newButtonDescription()
-                .name("Delete question")
-                .imageExpression("aql:'/icons/questionnaire/trash.svg'")
-                .body(viewBuilderHelper.newChangeContext()
-                        .expression("aql: " + variable + ".eContainer()")
-                        .children(viewBuilderHelper.newUnsetValue()
-                                .featureName("elements")
-                                .elementExpression("aql: " + variable)
-                                .build())
-                        .build())
-                .style(formBuilderHelper.newButtonDescriptionStyle()
-                        .backgroundColor(colorProvider.getColor("Questionnaire_White"))
-                        .build())
-                .build();
+        var deleteQuestionButtonDescription = createDeleteButton(variable, "elements", "Delete question", colorProvider);
 
         questionContainer.getChildren().add(questionNameDescription);
         questionContainer.getChildren().add(questionTitleDescription);
@@ -304,12 +297,12 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
                 .iterableExpression("aql:element.elements")
                 .iterator("element2")
                 .name("For Each Elements of a group")
-                .children(this.getElementDescription(colorProvider, "element2", "element"))
+                .children(this.getFormElementDescription(colorProvider, "element2").toArray(FormElementDescription[]::new))
                 .build();
 
         conditionalGroupGroupDescription.getChildren().add(conditionDescription);
         conditionalGroupGroupDescription.getChildren().add(forEachQuestionDescription);
-        conditionalGroupGroupDescription.getChildren().add(this.createButtonDescription("element", false));
+        conditionalGroupGroupDescription.getChildren().add(this.createButtonDescription("element", true, colorProvider));
 
         return conditionalGroupGroupDescription;
     }
@@ -328,7 +321,7 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
                 .build();
     }
 
-    public FormElementDescription createButtonDescription(String self, boolean addConditionalGroup) {
+    public FormElementDescription createButtonDescription(String self, boolean inConditionalGroup, IColorProvider colorProvider) {
         var group = formBuilderHelper.newFlexboxContainerDescription()
                 .name("Creation Button Group")
                 .flexDirection(FlexDirection.ROW)
@@ -365,7 +358,7 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
 
         group.getChildren().add(createQuestionButton);
 
-        if(addConditionalGroup) {
+        if(!inConditionalGroup) {
             var createConditionalGroupButton = formBuilderHelper.newButtonDescription()
                     .name("Create Conditional Group Button")
                     .buttonLabelExpression("new conditional group")
@@ -381,15 +374,38 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
         var createQuestionReuseButton = formBuilderHelper.newButtonDescription()
                 .name("Create Question Reuse Button")
                 .buttonLabelExpression("reuse question")
-                .body(viewBuilderHelper
-                        .newCreateInstance()
-                        .referenceName("elements")
-                        .typeName("questionnaire::QuestionReuse")
+                .body(viewBuilderHelper.newChangeContext()
+                        .expression("aql:" + self)
+                        .children(viewBuilderHelper.newCreateInstance()
+                            .referenceName("elements")
+                            .typeName("questionnaire::QuestionReuse")
+                            .build())
                         .build())
                 .build();
         group.getChildren().add(createQuestionReuseButton);
 
+        if(inConditionalGroup) {
+            group.getChildren().add(createDeleteButton(self, "elements", "Delete question", colorProvider));
+        }
+
         return group;
+    }
+
+    public FormElementDescription createDeleteButton(String elementToDelete, String containerFeatureName, String name, IColorProvider colorProvider) {
+        return formBuilderHelper.newButtonDescription()
+                .name(name)
+                .imageExpression("aql:'/icons/questionnaire/trash.svg'")
+                .body(viewBuilderHelper.newChangeContext()
+                        .expression("aql: " + elementToDelete + ".eContainer()")
+                        .children(viewBuilderHelper.newUnsetValue()
+                                .featureName(containerFeatureName)
+                                .elementExpression("aql: " + elementToDelete)
+                                .build())
+                        .build())
+                .style(formBuilderHelper.newButtonDescriptionStyle()
+                        .backgroundColor(colorProvider.getColor("Questionnaire_White"))
+                        .build())
+                .build();
     }
 
 }

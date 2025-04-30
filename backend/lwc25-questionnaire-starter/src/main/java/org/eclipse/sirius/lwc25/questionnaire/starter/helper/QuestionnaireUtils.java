@@ -23,7 +23,7 @@ public class QuestionnaireUtils {
                 questions.add(question);
             } else if(current instanceof ConditionalGroup group && !EcoreUtil.isAncestor(group, obj)) {
                 iterator.prune();
-            } else if(current instanceof QuestionReuse reuse) {
+            } else if(current instanceof QuestionReuse reuse && !questions.contains(reuse.getQuestion())) {
                 questions.add(reuse.getQuestion());
             }
         }

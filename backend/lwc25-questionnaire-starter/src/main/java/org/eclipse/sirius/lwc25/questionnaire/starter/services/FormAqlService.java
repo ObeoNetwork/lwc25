@@ -47,7 +47,7 @@ public class FormAqlService {
             expectedType = Boolean.class.getSimpleName();
         }
         return validator.validateAqlExpression(element, expression, feature, expectedType)
-                .stream().reduce((diag1, diag2) -> { diag1.getChildren().add(diag2); return diag1; }).orElse(null);
+                .stream().reduce((diag1, diag2) -> { diag1.add(diag2); return diag1; }).orElse(null);
     }
 
     public Diagnostic validateIntType(IntegerType type) {

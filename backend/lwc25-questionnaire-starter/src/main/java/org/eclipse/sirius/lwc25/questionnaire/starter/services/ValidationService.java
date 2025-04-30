@@ -21,7 +21,7 @@ import java.util.Optional;
 @Service
 public class ValidationService {
 
-    private Diagnostic newDiagnostic(String text, EObject object, String feature) {
+    private BasicDiagnostic newDiagnostic(String text, EObject object, String feature) {
         return new BasicDiagnostic(org.eclipse.emf.common.util.Diagnostic.ERROR,
                 "sirius-web-application",
                 0,
@@ -51,9 +51,9 @@ public class ValidationService {
         return Optional.empty();
     }
 
-    public List<Diagnostic> validateAqlExpression(QuestionnaireElement element, String expression, String feature, @Nullable String expectedType) {
+    public List<BasicDiagnostic> validateAqlExpression(QuestionnaireElement element, String expression, String feature, @Nullable String expectedType) {
         var aqlValidator = new AQLValidator(List.of(new UserAnswersAqlService(this)), List.of(AnswerPackage.eINSTANCE, QuestionnairePackage.eINSTANCE));
-        var diagnostics = new LinkedList<Diagnostic>();
+        var diagnostics = new LinkedList<BasicDiagnostic>();
         var scopedQuestions = QuestionnaireUtils.getScopedVariables(element);
 
         // Computed expression format
@@ -110,14 +110,14 @@ public class ValidationService {
             }
         } catch (NumberFormatException exception) {
             return Optional.of(newDiagnostic(String.format("'%s' is not an integer.", value), container, featureName));
-        }
+        } catch(NullPointerException ignored) {}
         return Optional.empty();
     }
 
     public Optional<Diagnostic> validateDecimal(String value, EObject container, String featureName) {
         try {
             Double.parseDouble(value);
-        } catch (NumberFormatException exception) {
+        } catch (NullPointerException | NumberFormatException exception) {
             return Optional.of(newDiagnostic(String.format("'%s' is not a decimal number.", value), container, featureName));
         }
         return Optional.empty();
@@ -142,7 +142,7 @@ public class ValidationService {
     public Optional<Diagnostic> validateDate(String value, EObject container, String featureName) {
         try {
             Instant.parse(value);
-        } catch (DateTimeParseException exception) {
+        } catch (NullPointerException | DateTimeParseException exception) {
             return Optional.of(newDiagnostic(String.format("'%s' is not a valid date.", value), container, featureName));
         }
         return Optional.empty();

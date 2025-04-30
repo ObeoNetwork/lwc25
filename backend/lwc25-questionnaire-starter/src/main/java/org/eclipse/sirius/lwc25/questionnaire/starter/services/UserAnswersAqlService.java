@@ -6,6 +6,7 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.QueryParsing;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.answer.*;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -18,6 +19,7 @@ import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class UserAnswersAqlService {
 
@@ -27,26 +29,65 @@ public class UserAnswersAqlService {
         this.validator = validator;
     }
 
-    public boolean mustBeHidden(Question question, UserAnswers answers) {
+    public boolean mustBeHidden(QuestionnaireElement question, UserAnswers answers) {
         var parent = question.eContainer();
         boolean result = false;
-        if(parent instanceof ConditionalGroup group){
-            result = group.getCondition() == null;
-            var manager = getScopedVariables(group, answers);
-            result |= hasUndefinedVariables(group.getCondition(), manager);
-
-            if (!result) {
-                AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(this), List.of(AnswerPackage.eINSTANCE, QuestionnairePackage.eINSTANCE));
-                result = interpreter.evaluateExpression(manager.getVariables(), group.getCondition()).asBoolean().map(r -> !r).orElse(true);
-            }
-
-            // If hidden, we reset the value of the answer to this question
+        if(parent instanceof ConditionalGroup group) {
+            result = mustBeHidden(group, answers);
             if(result) {
-                getCorrespondingAnswer(question, answers)
-                        .ifPresent(answer -> new EcoreIntrinsicExtender().eSet(answer, "answer", null));
+                resetAnswer(question, answers);
             }
         }
 
+        return result;
+    }
+
+    private boolean mustBeHidden(ConditionalGroup group, UserAnswers answers) {
+        var result = group.getCondition() == null;
+        var manager = getScopedVariables(group, answers);
+        result |= hasUndefinedVariables(group.getCondition(), manager);
+
+        if (!result) {
+            AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(this), List.of(AnswerPackage.eINSTANCE, QuestionnairePackage.eINSTANCE));
+            result = interpreter.evaluateExpression(manager.getVariables(), group.getCondition()).asBoolean().map(r -> !r).orElse(true);
+        }
+        return result;
+    }
+
+    private void resetAnswer(QuestionnaireElement element, UserAnswers answers) {
+        List<QuestionnaireElement> dependencies = Streams.stream(EcoreUtil.getRootContainer(element).eAllContents())
+                    .filter(elem -> elem instanceof QuestionReuse reuse && reuse.getQuestion() == element)
+                    .filter(elem -> element != elem)
+                    .map(QuestionnaireElement.class::cast)
+                    .collect(Collectors.toCollection(LinkedList::new));
+
+        if(element instanceof QuestionReuse reuse) {
+            dependencies.add(reuse.getQuestion());
+        }
+
+        var shouldResetAnswer = true;
+
+        for(var dependency: dependencies) {
+            if(dependency.eContainer() instanceof ConditionalGroup group) {
+                shouldResetAnswer &= mustBeHidden(group, answers);
+            } else {
+                shouldResetAnswer = false;
+            }
+        }
+
+        // If at least one reuse of the question is displayed, we don't reset the value of the answer
+        if(shouldResetAnswer) {
+            getCorrespondingAnswer(element instanceof QuestionReuse reuse ? reuse.getQuestion() : (Question) element, answers)
+                    .ifPresent(answer -> new EcoreIntrinsicExtender().eSet(answer, "answer", null));
+        }
+    }
+
+    public String evaluateAndSave(Question question, UserAnswers answers) {
+        var result = evaluate(question, answers);
+        answers.getAnswers().stream()
+                .filter(answer -> answer.getQuestion() == question)
+                .findFirst()
+                .ifPresent(answer -> new EcoreIntrinsicExtender().eSet(answer, "answer", result));
         return result;
     }
 
