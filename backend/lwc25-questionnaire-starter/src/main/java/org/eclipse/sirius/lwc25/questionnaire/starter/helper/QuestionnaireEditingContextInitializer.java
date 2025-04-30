@@ -78,7 +78,7 @@ public class QuestionnaireEditingContextInitializer implements IEditingContextPr
 
             emfEditingContext.getViews().add(getView("QuestionnaireView", QuestionnaireFormDescriptionProvider::new));
             emfEditingContext.getViews().add(getView("UserAnswerView", () -> new UserAnswerFormDescriptionProvider(generators)));
-            emfEditingContext.getViews().add(getView("FormAnswerView", FormAnswerDescriptionProvider::new));
+            emfEditingContext.getViews().add(getView("StatisticsView", StatisticsFormProvider::new));
             emfEditingContext.getViews().add(getView("QLStyleView", QLStyleFormDescriptionProvider::new));
         }
     }

@@ -39,13 +39,20 @@ public class QuestionnaireFormDescriptionProvider implements IRepresentationDesc
                 .semanticCandidatesExpression("aql:self")
                 .build();
 
+        var formNameTextfield = formBuilderHelper.newTextfieldDescription()
+                .name("Form name")
+                .labelExpression("Name of the questionnaire")
+                .valueExpression("aql: self.name")
+                .body(viewUtils.textfieldSetter("self", "name"))
+                .build();
+
+        renderGroupDescription.getChildren().add(formNameTextfield);
+
         var forEachQuestionDescription = formBuilderHelper.newFormElementFor()
                 .iterableExpression("aql:self.elements")
                 .iterator("element")
                 .name("For Each Elements")
                 .build();
-
-
 
         var ifIsConditionalGroupDescription = formBuilderHelper.newFormElementIf()
                 .name("If Is Conditional Group Description")

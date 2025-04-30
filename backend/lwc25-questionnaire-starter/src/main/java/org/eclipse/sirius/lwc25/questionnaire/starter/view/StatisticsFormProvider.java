@@ -11,7 +11,7 @@ import org.eclipse.sirius.components.view.form.PageDescription;
 
 import java.util.List;
 
-public class FormAnswerDescriptionProvider implements IRepresentationDescriptionProvider {
+public class StatisticsFormProvider implements IRepresentationDescriptionProvider {
 
     private final FormBuilders formBuilderHelper = new FormBuilders();
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();
@@ -20,50 +20,13 @@ public class FormAnswerDescriptionProvider implements IRepresentationDescription
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
         var formDescription = formBuilderHelper.newFormDescription()
-                .name("Form Answer Description")
+                .name("Answer Statistics Description")
                 .domainType("answer::FormAnswers")
-                .titleExpression("Form Main Page")
+                .titleExpression("Answer Statistics Page")
                 .build();
 
-        var pageDescription = formBuilderHelper.newPageDescription()
-                .name("Answer Page Description")
-                .domainType("answer::FormAnswers")
-                .semanticCandidatesExpression("aql:self")
-                .labelExpression("Answers")
-                .build();
 
-        var renderGroupDescription = formBuilderHelper.newGroupDescription()
-                .name("Render Group Description")
-                .semanticCandidatesExpression("aql:self")
-                .build();
-
-        var formLabel = formBuilderHelper.newLabelDescription()
-                .valueExpression("aql: 'You\\'re about to fill in the form \\'' + self.form.name + '\\''")
-                .build();
-
-        var idTextfield = formBuilderHelper.newTextfieldDescription()
-                .labelExpression("Your email address")
-                .body(viewUtils.textfieldSetter("self", "userId"))
-                .valueExpression("aql: self.userId")
-                .build();
-
-        var confirmButton = formBuilderHelper.newButtonDescription()
-                .buttonLabelExpression("Start")
-                .isEnabledExpression("aql:self.userId.size() > 0")
-                .body(viewBuilderHelper.newChangeContext()
-                        .expression("aql:self.start(editingContext)").build()/*,
-                        viewBuilderHelper.newSetValue()
-                                .featureName("userId")
-                                .valueExpression("")
-                                .build()*/)
-                    .build();
-
-        formDescription.getPages().addAll(List.of(pageDescription, createStatsPage(colorProvider)));
-        pageDescription.getGroups().add(renderGroupDescription);
-        renderGroupDescription.getChildren().add(formLabel);
-        renderGroupDescription.getChildren().add(idTextfield);
-        renderGroupDescription.getChildren().add(confirmButton);
-
+        formDescription.getPages().add(createStatsPage(colorProvider));
         return formDescription;
     }
 
@@ -79,6 +42,13 @@ public class FormAnswerDescriptionProvider implements IRepresentationDescription
                 .name("Render Group Description")
                 .semanticCandidatesExpression("aql:self")
                 .build();
+
+        var nbAnswerGlobalLabel = formBuilderHelper.newLabelDescription()
+                .name("Display Global Nb Answers")
+                .valueExpression("aql: 'Number of participants: ' + self.userAnswers->size()")
+                .build();
+
+        renderGroupDescription.getChildren().add(nbAnswerGlobalLabel);
 
         var forQuestions = formBuilderHelper.newFormElementFor()
                 .iterableExpression("aql:self.form.eAllContents(questionnaire::Question)->select(q | q.computedExpression.size() = 0)")
@@ -100,8 +70,8 @@ public class FormAnswerDescriptionProvider implements IRepresentationDescription
                 .build();
 
         var ifNotEnumQuestion = formBuilderHelper.newFormElementIf()
-                .name("If It Is Not Enumeration Question")
-                .predicateExpression("aql: not it.type.oclIsKindOf(questionnaire::EnumerationType)")
+                .name("If It Is Not Representable by a Pie Chart")
+                .predicateExpression("aql: not (it.type.oclIsKindOf(questionnaire::EnumerationType) or it.type.oclIsKindOf(questionnaire::BooleanType))")
                 .build();
 
         var notEnumQuestionStats = formBuilderHelper.newListDescription()
@@ -112,8 +82,8 @@ public class FormAnswerDescriptionProvider implements IRepresentationDescription
                 .build();
 
         var ifEnumerationQuestion = formBuilderHelper.newFormElementIf()
-                .name("If It Is Enumeration Question")
-                .predicateExpression("aql: it.type.oclIsKindOf(questionnaire::EnumerationType)")
+                .name("If It Is Representable by a Pie Chart")
+                .predicateExpression("aql: it.type.oclIsKindOf(questionnaire::EnumerationType) or it.type.oclIsKindOf(questionnaire::BooleanType)")
                 .build();
 
         var enumQuestionStats = formBuilderHelper.newPieChartDescription()

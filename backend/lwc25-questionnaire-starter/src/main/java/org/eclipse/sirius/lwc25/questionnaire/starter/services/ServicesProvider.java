@@ -19,7 +19,7 @@ public class ServicesProvider implements IJavaServiceProvider {
         if(isSpeciticType.apply("answer::UserAnswers")) {
             return List.of(UserAnswersAqlService.class, UserAnswersStyleAqlService.class);
         } else if(isSpeciticType.apply("answer::FormAnswers")) {
-            return List.of(FormAnswersAqlService.class);
+            return List.of(StatisticsAqlService.class);
         } else if(isSpeciticType.apply("questionnaire::Form")) {
             return List.of(FormAqlService.class);
         } else if(isSpeciticType.apply("qlstyle::QLStyle")) {
