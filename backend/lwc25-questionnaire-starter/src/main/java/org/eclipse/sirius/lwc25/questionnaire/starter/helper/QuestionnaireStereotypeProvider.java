@@ -63,7 +63,7 @@ public class QuestionnaireStereotypeProvider implements IStereotypeProvider {
             return List.of(
                     new Stereotype(EMPTY_QUESTIONNAIRE, "Questionnaire"),
                     new Stereotype(EMPTY_ANSWERS, "Questionnaire Answers"),
-                    new Stereotype(EMPTY_ANSWERS, "Questionnaire Style")
+                    new Stereotype(EMPTY_STYLE, "Questionnaire Style")
             );
         }
         return List.of();

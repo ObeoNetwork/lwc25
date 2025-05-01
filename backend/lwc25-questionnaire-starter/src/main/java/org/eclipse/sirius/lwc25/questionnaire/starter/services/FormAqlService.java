@@ -50,7 +50,7 @@ public class FormAqlService {
         if(diag.isPresent()) {
             return diag.get();
         }
-        return validator.validateAqlExpression(element, expression, feature, expectedType)
+        return validator.validateAqlExpression(element, expression, feature, expectedType, true)
                 .stream().reduce((diag1, diag2) -> { diag1.add(diag2); return diag1; }).orElse(null);
     }
 

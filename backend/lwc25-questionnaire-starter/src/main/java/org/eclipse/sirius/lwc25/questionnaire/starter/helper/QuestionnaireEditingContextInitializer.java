@@ -83,7 +83,7 @@ public class QuestionnaireEditingContextInitializer implements IEditingContextPr
         }
     }
 
-    private View getView(String viewName, Supplier<IRepresentationDescriptionProvider> provider) {
+    protected View getView(String viewName, Supplier<IRepresentationDescriptionProvider> provider) {
         ViewBuilder viewBuilder = new ViewBuilder();
         View view = viewBuilder.build();
 
@@ -104,7 +104,7 @@ public class QuestionnaireEditingContextInitializer implements IEditingContextPr
         return view;
     }
 
-    private ColorPalette createColorPalette() {
+    protected ColorPalette createColorPalette() {
         var colorPalette = ViewFactory.eINSTANCE.createColorPalette();
 
         colorPalette.getColors().add(this.createFixedColor("Questionnaire_White", "#FFFFFF"));

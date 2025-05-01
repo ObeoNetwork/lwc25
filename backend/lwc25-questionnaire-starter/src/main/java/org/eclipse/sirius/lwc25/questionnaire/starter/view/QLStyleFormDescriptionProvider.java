@@ -152,7 +152,7 @@ public class QLStyleFormDescriptionProvider implements IRepresentationDescriptio
                 .build();
 
         var helpTextfield = formBuilderHelper.newTextfieldDescription()
-                .labelExpression("Tooltip")
+                .labelExpression("aql: 'Tooltip for ' + " + currentStyle + ".question.name")
                 .valueExpression("aql: " + currentStyle + ".helpText")
                 .body(viewUtils.textfieldSetter(currentStyle, "helpText"))
                 .build();
@@ -179,7 +179,7 @@ public class QLStyleFormDescriptionProvider implements IRepresentationDescriptio
                 .candidatesExpression("aql: " + currentStyle + ".question.type.getAvailableWidgets()")
                 .candidateLabelExpression("aql: candidate")
                 .body(viewUtils.textfieldSetter(currentStyle, "widget"))
-                .labelExpression("aql: 'Select widget for ' + " + currentStyle + ".question.label")
+                .labelExpression("aql: 'Select widget for ' + " + currentStyle + ".question.name")
                 .build();
 
         ifCanChooseWidget.getChildren().add(widgetSelector);

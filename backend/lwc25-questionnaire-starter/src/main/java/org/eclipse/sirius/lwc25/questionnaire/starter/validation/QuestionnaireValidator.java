@@ -47,13 +47,13 @@ public class QuestionnaireValidator implements EValidator {
     public boolean validateQuestion(Question question, DiagnosticChain diagnostics) {
         var result = validator.validateQuestionName(question);
         result.ifPresent(diagnostics::add);
-        var aqlResult = validator.validateAqlExpression(question, question.getComputedExpression(), "computedExpression", null);
+        var aqlResult = validator.validateAqlExpression(question, question.getComputedExpression(), "computedExpression", null, false);
         aqlResult.forEach(diagnostics::add);
         return result.isEmpty() && aqlResult.isEmpty();
     }
 
     public boolean validateConditionalGroup(ConditionalGroup group, DiagnosticChain diagnostics) {
-        var aqlResult = validator.validateAqlExpression(group, group.getCondition(), "condition", Boolean.class.getSimpleName());
+        var aqlResult = validator.validateAqlExpression(group, group.getCondition(), "condition", Boolean.class.getSimpleName(), true);
         aqlResult.forEach(diagnostics::add);
         return aqlResult.isEmpty();
     }

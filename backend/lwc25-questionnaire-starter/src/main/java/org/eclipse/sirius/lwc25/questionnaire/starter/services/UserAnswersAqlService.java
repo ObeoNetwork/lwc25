@@ -49,7 +49,7 @@ public class UserAnswersAqlService {
 
         if (!result) {
             AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(this), List.of(AnswerPackage.eINSTANCE, QuestionnairePackage.eINSTANCE));
-            result = interpreter.evaluateExpression(manager.getVariables(), group.getCondition()).asBoolean().map(r -> !r).orElse(true);
+            result = interpreter.evaluateExpression(manager.getVariables(), group.getCondition()).asString().map(r -> r.isEmpty() || r.equals("false")).orElse(true);
         }
         return result;
     }
@@ -88,7 +88,7 @@ public class UserAnswersAqlService {
                 .filter(answer -> answer.getQuestion() == question)
                 .findFirst()
                 .ifPresent(answer -> new EcoreIntrinsicExtender().eSet(answer, "answer", result));
-        return result;
+        return convertToString(result, question);
     }
 
     public String evaluate(Question question, UserAnswers answers) {
@@ -131,7 +131,7 @@ public class UserAnswersAqlService {
                     result = Boolean.parseBoolean(answer.getAnswer());
                 } else if (answer.getQuestion().getType() instanceof IntegerType) {
                     result = Integer.parseInt(answer.getAnswer());
-                } else if (answer.getQuestion().getType() instanceof DecimalType || answer.getQuestion() instanceof MoneyType) {
+                } else if (answer.getQuestion().getType() instanceof DecimalType || answer.getQuestion().getType() instanceof MoneyType) {
                     result = Float.parseFloat(answer.getAnswer());
                 } else if (answer.getQuestion().getType() instanceof DateType) {
                     result = Date.valueOf(answer.getAnswer());
@@ -140,6 +140,13 @@ public class UserAnswersAqlService {
             }
         }
         return Optional.ofNullable(result);
+    }
+
+    private String convertToString(String value, Question question) {
+        if(question.getType() instanceof MoneyType) {
+            return value + "€";
+        }
+        return value;
     }
 
     private boolean hasUndefinedVariables(String query, VariableManager manager) {

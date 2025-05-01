@@ -1,6 +1,7 @@
 package org.eclipse.sirius.lwc25.questionnaire.starter.services;
 
 import jakarta.annotation.Nullable;
+import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -51,7 +52,7 @@ public class ValidationService {
         return Optional.empty();
     }
 
-    public List<BasicDiagnostic> validateAqlExpression(QuestionnaireElement element, String expression, String feature, @Nullable String expectedType) {
+    public List<BasicDiagnostic> validateAqlExpression(QuestionnaireElement element, String expression, String feature, @Nullable String expectedType, boolean autorizeUndefined) {
         var aqlValidator = new AQLValidator(List.of(new UserAnswersAqlService(this)), List.of(AnswerPackage.eINSTANCE, QuestionnairePackage.eINSTANCE));
         var diagnostics = new LinkedList<BasicDiagnostic>();
         var scopedQuestions = QuestionnaireUtils.getScopedVariables(element);
@@ -69,6 +70,10 @@ public class ValidationService {
                         .filter(ClassType.class::isInstance)
                         .map(ClassType.class::cast)
                         .anyMatch(clazz -> clazz.getType().getSimpleName().equals(expectedType));
+
+                if(autorizeUndefined && result.getAstResult().getAst() instanceof VarRef) {
+                    isWellTyped = true;
+                }
                 if (!isWellTyped) {
                     diagnostics.add(newDiagnostic("The expression must be a " + expectedType.toLowerCase() + " expression.", element, feature));
                 }
