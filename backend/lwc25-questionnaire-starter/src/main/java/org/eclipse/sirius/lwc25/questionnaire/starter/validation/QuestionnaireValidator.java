@@ -5,7 +5,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EValidator;
-import org.eclipse.sirius.answer.Answer;
 import org.eclipse.sirius.lwc25.questionnaire.starter.services.ValidationService;
 import org.eclipse.sirius.questionnaire.ConditionalGroup;
 import org.eclipse.sirius.questionnaire.IntegerType;

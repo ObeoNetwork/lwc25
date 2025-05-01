@@ -1,24 +1,11 @@
 package org.eclipse.sirius.lwc25.questionnaire.starter.services;
 
 import com.google.common.collect.Streams;
-import org.apache.catalina.User;
-import org.eclipse.acceleo.query.ast.VarRef;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
-import org.eclipse.acceleo.query.runtime.QueryParsing;
-import org.eclipse.emf.common.util.Diagnostic;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.answer.*;
-import org.eclipse.sirius.components.core.api.IIdentityService;
-import org.eclipse.sirius.components.interpreter.AQLInterpreter;
-import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.ecore.extender.business.internal.accessor.ecore.EcoreIntrinsicExtender;
-import org.eclipse.sirius.lwc25.questionnaire.starter.helper.QuestionnaireUtils;
 import org.eclipse.sirius.qlstyle.QLStyle;
-import org.eclipse.sirius.questionnaire.*;
+import org.eclipse.sirius.questionnaire.Form;
+import org.eclipse.sirius.questionnaire.IntegerType;
 
-import java.sql.Date;
-import java.util.*;
+import java.util.List;
 import java.util.stream.IntStream;
 
 public class UserAnswersStyleAqlService {

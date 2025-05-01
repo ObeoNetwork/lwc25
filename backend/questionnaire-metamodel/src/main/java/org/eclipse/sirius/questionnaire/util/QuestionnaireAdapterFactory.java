@@ -6,22 +6,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.questionnaire.BooleanType;
-import org.eclipse.sirius.questionnaire.ConditionalGroup;
-import org.eclipse.sirius.questionnaire.DateType;
-import org.eclipse.sirius.questionnaire.DecimalType;
-import org.eclipse.sirius.questionnaire.EnumerationLiteral;
-import org.eclipse.sirius.questionnaire.EnumerationType;
-import org.eclipse.sirius.questionnaire.Form;
-import org.eclipse.sirius.questionnaire.IntegerType;
-import org.eclipse.sirius.questionnaire.MoneyType;
-import org.eclipse.sirius.questionnaire.NamedElement;
-import org.eclipse.sirius.questionnaire.Question;
-import org.eclipse.sirius.questionnaire.QuestionReuse;
-import org.eclipse.sirius.questionnaire.QuestionnaireElement;
-import org.eclipse.sirius.questionnaire.QuestionnairePackage;
-import org.eclipse.sirius.questionnaire.StringType;
-import org.eclipse.sirius.questionnaire.Type;
+import org.eclipse.sirius.questionnaire.*;
 
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides

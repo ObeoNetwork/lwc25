@@ -8,10 +8,8 @@ import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.questionnaire.ConditionalGroup;
 import org.eclipse.sirius.questionnaire.Question;
-import org.eclipse.sirius.questionnaire.QuestionReuse;
 import org.eclipse.sirius.questionnaire.QuestionnaireElement;
 
 import java.util.LinkedList;
@@ -20,7 +18,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class QuestionnaireUtils {
 

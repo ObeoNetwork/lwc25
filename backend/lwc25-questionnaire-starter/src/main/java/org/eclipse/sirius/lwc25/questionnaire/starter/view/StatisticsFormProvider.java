@@ -51,7 +51,7 @@ public class StatisticsFormProvider implements IRepresentationDescriptionProvide
         renderGroupDescription.getChildren().add(nbAnswerGlobalLabel);
 
         var forQuestions = formBuilderHelper.newFormElementFor()
-                .iterableExpression("aql:self.form.eAllContents(questionnaire::Question)->select(q | q.computedExpression.size() = 0)")
+                .iterableExpression("aql:self.form.eAllContents(questionnaire::Question)")
                 .iterator("it")
                 .build();
 

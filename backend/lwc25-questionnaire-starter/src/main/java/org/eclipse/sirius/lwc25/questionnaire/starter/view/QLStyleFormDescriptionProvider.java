@@ -3,7 +3,6 @@ package org.eclipse.sirius.lwc25.questionnaire.starter.view;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.builder.generated.form.FormBuilders;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionStyleBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;

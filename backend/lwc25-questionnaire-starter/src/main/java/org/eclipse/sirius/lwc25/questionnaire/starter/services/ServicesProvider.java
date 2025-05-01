@@ -4,6 +4,7 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.function.Function;
 

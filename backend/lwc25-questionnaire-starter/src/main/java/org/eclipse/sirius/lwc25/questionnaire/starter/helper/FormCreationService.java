@@ -1,6 +1,7 @@
 package org.eclipse.sirius.lwc25.questionnaire.starter.helper;
 
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -16,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import io.micrometer.core.instrument.Timer;
 import java.util.concurrent.TimeUnit;
 
 @Service

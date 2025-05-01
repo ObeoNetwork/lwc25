@@ -7,11 +7,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-import org.eclipse.sirius.answer.Answer;
-import org.eclipse.sirius.answer.AnswerFactory;
-import org.eclipse.sirius.answer.AnswerPackage;
-import org.eclipse.sirius.answer.FormAnswers;
-import org.eclipse.sirius.answer.UserAnswers;
+import org.eclipse.sirius.answer.*;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!--

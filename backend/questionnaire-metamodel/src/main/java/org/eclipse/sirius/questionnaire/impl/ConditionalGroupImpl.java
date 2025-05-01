@@ -2,8 +2,6 @@
  */
 package org.eclipse.sirius.questionnaire.impl;
 
-import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -16,6 +14,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.questionnaire.ConditionalGroup;
 import org.eclipse.sirius.questionnaire.QuestionnaireElement;
 import org.eclipse.sirius.questionnaire.QuestionnairePackage;
+
+import java.util.Collection;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object

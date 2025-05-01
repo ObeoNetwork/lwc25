@@ -2,8 +2,6 @@
  */
 package org.eclipse.sirius.qlstyle.impl;
 
-import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -17,6 +15,8 @@ import org.eclipse.sirius.qlstyle.QLStyle;
 import org.eclipse.sirius.qlstyle.QLStyleElement;
 import org.eclipse.sirius.qlstyle.QLStylePackage;
 import org.eclipse.sirius.questionnaire.Form;
+
+import java.util.Collection;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>QL

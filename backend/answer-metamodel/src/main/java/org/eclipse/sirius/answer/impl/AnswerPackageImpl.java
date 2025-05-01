@@ -7,11 +7,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-import org.eclipse.sirius.answer.Answer;
-import org.eclipse.sirius.answer.AnswerFactory;
-import org.eclipse.sirius.answer.AnswerPackage;
-import org.eclipse.sirius.answer.FormAnswers;
-import org.eclipse.sirius.answer.UserAnswers;
+import org.eclipse.sirius.answer.*;
 import org.eclipse.sirius.questionnaire.QuestionnairePackage;
 
 /**

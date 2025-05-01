@@ -2,8 +2,6 @@
  */
 package org.eclipse.sirius.answer.impl;
 
-import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -17,6 +15,8 @@ import org.eclipse.sirius.answer.AnswerPackage;
 import org.eclipse.sirius.answer.FormAnswers;
 import org.eclipse.sirius.answer.UserAnswers;
 import org.eclipse.sirius.questionnaire.Form;
+
+import java.util.Collection;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Form

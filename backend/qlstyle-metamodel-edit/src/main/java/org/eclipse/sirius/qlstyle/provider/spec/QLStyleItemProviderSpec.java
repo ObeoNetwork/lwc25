@@ -2,7 +2,6 @@ package org.eclipse.sirius.qlstyle.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.sirius.qlstyle.provider.QLStyleItemProvider;
-import org.eclipse.sirius.qlstyle.provider.QuestionCustomizationItemProvider;
 
 public class QLStyleItemProviderSpec extends QLStyleItemProvider {
     /**

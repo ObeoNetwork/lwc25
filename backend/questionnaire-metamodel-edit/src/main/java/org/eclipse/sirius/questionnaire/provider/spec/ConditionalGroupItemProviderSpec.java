@@ -2,7 +2,6 @@ package org.eclipse.sirius.questionnaire.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.sirius.questionnaire.provider.ConditionalGroupItemProvider;
-import org.eclipse.sirius.questionnaire.provider.QuestionReuseItemProvider;
 
 public class ConditionalGroupItemProviderSpec extends ConditionalGroupItemProvider {
     /**

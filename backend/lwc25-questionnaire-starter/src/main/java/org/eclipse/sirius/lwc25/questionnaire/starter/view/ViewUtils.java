@@ -5,8 +5,6 @@ import org.eclipse.sirius.components.view.builder.generated.form.FormBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
 
-import java.util.List;
-
 public class ViewUtils {
 
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();

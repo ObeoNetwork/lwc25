@@ -11,7 +11,6 @@ import org.eclipse.sirius.questionnaire.QuestionnairePackage;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class UserAnswerFormDescriptionProvider implements IRepresentationDescriptionProvider {

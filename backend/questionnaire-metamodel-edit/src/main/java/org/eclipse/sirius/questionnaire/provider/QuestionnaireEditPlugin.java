@@ -2,12 +2,12 @@
  */
 package org.eclipse.sirius.questionnaire.provider;
 
+import org.eclipse.emf.common.EMFPlugin;
+import org.eclipse.emf.common.util.ResourceLocator;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-
-import org.eclipse.emf.common.EMFPlugin;
-import org.eclipse.emf.common.util.ResourceLocator;
 
 /**
  * This is the central singleton for the Questionnaire edit plugin. <!--

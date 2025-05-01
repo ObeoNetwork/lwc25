@@ -7,23 +7,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-import org.eclipse.sirius.questionnaire.BooleanType;
-import org.eclipse.sirius.questionnaire.ConditionalGroup;
-import org.eclipse.sirius.questionnaire.DateType;
-import org.eclipse.sirius.questionnaire.DecimalType;
-import org.eclipse.sirius.questionnaire.EnumerationLiteral;
-import org.eclipse.sirius.questionnaire.EnumerationType;
-import org.eclipse.sirius.questionnaire.Form;
-import org.eclipse.sirius.questionnaire.IntegerType;
-import org.eclipse.sirius.questionnaire.MoneyType;
-import org.eclipse.sirius.questionnaire.NamedElement;
-import org.eclipse.sirius.questionnaire.Question;
-import org.eclipse.sirius.questionnaire.QuestionReuse;
-import org.eclipse.sirius.questionnaire.QuestionnaireElement;
-import org.eclipse.sirius.questionnaire.QuestionnaireFactory;
-import org.eclipse.sirius.questionnaire.QuestionnairePackage;
-import org.eclipse.sirius.questionnaire.StringType;
-import org.eclipse.sirius.questionnaire.Type;
+import org.eclipse.sirius.questionnaire.*;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!--

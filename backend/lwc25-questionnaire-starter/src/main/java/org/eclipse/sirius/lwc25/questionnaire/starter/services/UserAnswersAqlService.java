@@ -10,7 +10,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.answer.*;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.ecore.extender.business.internal.accessor.ecore.EcoreIntrinsicExtender;
 import org.eclipse.sirius.lwc25.questionnaire.starter.helper.QuestionnaireUtils;
 import org.eclipse.sirius.questionnaire.*;

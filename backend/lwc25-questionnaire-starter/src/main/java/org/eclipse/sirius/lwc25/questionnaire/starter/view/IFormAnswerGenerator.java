@@ -4,7 +4,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.FormElementFor;
 import org.eclipse.sirius.components.view.form.FormElementIf;
-import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.questionnaire.QuestionnairePackage;
 
 import java.util.List;

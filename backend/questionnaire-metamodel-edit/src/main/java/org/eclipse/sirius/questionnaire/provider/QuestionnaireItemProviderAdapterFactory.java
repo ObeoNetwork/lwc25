@@ -2,36 +2,15 @@
  */
 package org.eclipse.sirius.questionnaire.provider;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.edit.provider.ChangeNotifier;
-import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.emf.edit.provider.IChangeNotifier;
-import org.eclipse.emf.edit.provider.IDisposable;
-import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
-import org.eclipse.emf.edit.provider.IItemLabelProvider;
-import org.eclipse.emf.edit.provider.IItemPropertySource;
-import org.eclipse.emf.edit.provider.INotifyChangedListener;
-import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
-import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
-import org.eclipse.sirius.questionnaire.provider.spec.BooleanTypeItemProviderSpec;
-import org.eclipse.sirius.questionnaire.provider.spec.ConditionalGroupItemProviderSpec;
-import org.eclipse.sirius.questionnaire.provider.spec.DateTypeItemProviderSpec;
-import org.eclipse.sirius.questionnaire.provider.spec.DecimalTypeItemProviderSpec;
-import org.eclipse.sirius.questionnaire.provider.spec.EnumerationLiteralItemProviderSpec;
-import org.eclipse.sirius.questionnaire.provider.spec.EnumerationTypeItemProviderSpec;
-import org.eclipse.sirius.questionnaire.provider.spec.FormItemProviderSpec;
-import org.eclipse.sirius.questionnaire.provider.spec.IntegerTypeItemProviderSpec;
-import org.eclipse.sirius.questionnaire.provider.spec.MoneyTypeItemProviderSpec;
-import org.eclipse.sirius.questionnaire.provider.spec.QuestionItemProviderSpec;
-import org.eclipse.sirius.questionnaire.provider.spec.QuestionReuseItemProviderSpec;
-import org.eclipse.sirius.questionnaire.provider.spec.StringTypeItemProviderSpec;
+import org.eclipse.emf.edit.provider.*;
+import org.eclipse.sirius.questionnaire.provider.spec.*;
 import org.eclipse.sirius.questionnaire.util.QuestionnaireAdapterFactory;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * This is the factory that is used to provide the interfaces needed to support

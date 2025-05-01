@@ -6,11 +6,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.qlstyle.Group;
-import org.eclipse.sirius.qlstyle.QLStyle;
-import org.eclipse.sirius.qlstyle.QLStyleElement;
-import org.eclipse.sirius.qlstyle.QLStylePackage;
-import org.eclipse.sirius.qlstyle.QuestionCustomization;
+import org.eclipse.sirius.qlstyle.*;
 
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides

@@ -2,20 +2,9 @@
  */
 package org.eclipse.sirius.qlstyle.impl;
 
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EEnum;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.*;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-import org.eclipse.sirius.qlstyle.Group;
-import org.eclipse.sirius.qlstyle.GroupLayout;
-import org.eclipse.sirius.qlstyle.QLStyle;
-import org.eclipse.sirius.qlstyle.QLStyleElement;
-import org.eclipse.sirius.qlstyle.QLStyleFactory;
-import org.eclipse.sirius.qlstyle.QLStylePackage;
-import org.eclipse.sirius.qlstyle.QuestionCustomization;
-import org.eclipse.sirius.qlstyle.Widget;
+import org.eclipse.sirius.qlstyle.*;
 import org.eclipse.sirius.questionnaire.QuestionnairePackage;
 
 /**

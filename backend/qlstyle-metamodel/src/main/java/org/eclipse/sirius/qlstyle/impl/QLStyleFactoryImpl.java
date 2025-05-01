@@ -8,13 +8,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-import org.eclipse.sirius.qlstyle.Group;
-import org.eclipse.sirius.qlstyle.GroupLayout;
-import org.eclipse.sirius.qlstyle.QLStyle;
-import org.eclipse.sirius.qlstyle.QLStyleFactory;
-import org.eclipse.sirius.qlstyle.QLStylePackage;
-import org.eclipse.sirius.qlstyle.QuestionCustomization;
-import org.eclipse.sirius.qlstyle.Widget;
+import org.eclipse.sirius.qlstyle.*;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!--

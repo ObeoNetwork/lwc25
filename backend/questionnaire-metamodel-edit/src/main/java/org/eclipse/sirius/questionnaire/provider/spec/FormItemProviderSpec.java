@@ -1,7 +1,6 @@
 package org.eclipse.sirius.questionnaire.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.sirius.questionnaire.provider.EnumerationTypeItemProvider;
 import org.eclipse.sirius.questionnaire.provider.FormItemProvider;
 
 public class FormItemProviderSpec extends FormItemProvider {

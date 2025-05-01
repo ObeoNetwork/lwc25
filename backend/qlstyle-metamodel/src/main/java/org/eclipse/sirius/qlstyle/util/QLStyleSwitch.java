@@ -5,11 +5,7 @@ package org.eclipse.sirius.qlstyle.util;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
-import org.eclipse.sirius.qlstyle.Group;
-import org.eclipse.sirius.qlstyle.QLStyle;
-import org.eclipse.sirius.qlstyle.QLStyleElement;
-import org.eclipse.sirius.qlstyle.QLStylePackage;
-import org.eclipse.sirius.qlstyle.QuestionCustomization;
+import org.eclipse.sirius.qlstyle.*;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance

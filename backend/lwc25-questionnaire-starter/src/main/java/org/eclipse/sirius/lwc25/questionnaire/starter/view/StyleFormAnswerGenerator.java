@@ -6,15 +6,10 @@ import org.eclipse.sirius.components.view.builder.generated.form.FormBuilders;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.FormElementFor;
 import org.eclipse.sirius.components.view.form.FormElementIf;
-import org.eclipse.sirius.components.view.form.WidgetDescription;
-import org.eclipse.sirius.qlstyle.QLStyle;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Supplier;
 
 @Component

@@ -1,7 +1,6 @@
 package org.eclipse.sirius.questionnaire.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.sirius.questionnaire.provider.FormItemProvider;
 import org.eclipse.sirius.questionnaire.provider.QuestionReuseItemProvider;
 
 public class QuestionReuseItemProviderSpec extends QuestionReuseItemProvider {

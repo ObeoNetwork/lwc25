@@ -3,7 +3,10 @@ package org.eclipse.sirius.lwc25.questionnaire.starter.services;
 import com.google.common.collect.Streams;
 import org.eclipse.sirius.answer.Answer;
 import org.eclipse.sirius.answer.FormAnswers;
-import org.eclipse.sirius.questionnaire.*;
+import org.eclipse.sirius.questionnaire.BooleanType;
+import org.eclipse.sirius.questionnaire.EnumerationLiteral;
+import org.eclipse.sirius.questionnaire.EnumerationType;
+import org.eclipse.sirius.questionnaire.Type;
 
 import java.util.List;
 import java.util.Map;

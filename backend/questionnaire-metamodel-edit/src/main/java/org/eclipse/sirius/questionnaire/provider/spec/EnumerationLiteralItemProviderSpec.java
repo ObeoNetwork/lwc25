@@ -2,7 +2,6 @@ package org.eclipse.sirius.questionnaire.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.sirius.questionnaire.provider.EnumerationLiteralItemProvider;
-import org.eclipse.sirius.questionnaire.provider.EnumerationTypeItemProvider;
 
 public class EnumerationLiteralItemProviderSpec extends EnumerationLiteralItemProvider {
     /**

@@ -1,7 +1,6 @@
 package org.eclipse.sirius.answer.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.sirius.answer.provider.FormAnswersItemProvider;
 import org.eclipse.sirius.answer.provider.UserAnswersItemProvider;
 
 public class UserAnswersItemProviderSpec extends UserAnswersItemProvider {
