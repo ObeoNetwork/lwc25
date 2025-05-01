@@ -15,6 +15,5 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="form" lowerBound="1" eType="ecore:EClass ../../../../../lwc25-questionnaire-metamodel/src/main/resources/model/questionnaire.ecore#//Form"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="userAnswers" upperBound="-1"
         eType="#//UserAnswers" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="userId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>
